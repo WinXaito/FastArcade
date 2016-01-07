@@ -89,7 +89,6 @@ public class Texture{
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-		System.out.println("Id de: " + name + " : " + id);
 		
 		//Retourne une nouvelle texture
 		return new Texture(width, height, id);
