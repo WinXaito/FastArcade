@@ -17,12 +17,33 @@ public class Main{
 	private static boolean vSync = true;
 	private static boolean sleep = false;
 	
+	private static final String osName = System.getProperty("os.name").toLowerCase();
+	
 	/**
 	 * Lancement de l'application
 	 * @param args
 	 */
 	public static void main(String args[]){
-		System.setProperty("org.lwjgl.librarypath", new File("lib/native_win/").getAbsolutePath());
+		String osNameProperty = osName;
+		
+		if(args.length == 1)
+			osNameProperty = args[0];
+		else if(args.length > 1)
+			System.err.println("Args incorrect");
+		
+		if(isOSNameMatch(osNameProperty, "win")){
+			System.setProperty("org.lwjgl.librarypath", new File("lib/native_win/").getAbsolutePath());
+		}else if(isOSNameMatch(osNameProperty, "mac")){
+			System.setProperty("org.lwjgl.librarypath", new File("lib/native_macosx/").getAbsolutePath());
+		}else if(isOSNameMatch(osNameProperty, "lin")){
+			System.setProperty("org.lwjgl.librarypath", new File("lib/native_linux/").getAbsolutePath());
+		}else if(isOSNameMatch(osNameProperty, "solaris")){
+			System.setProperty("org.lwjgl.librarypath", new File("lib/native_solaris/").getAbsolutePath());
+		}else{
+			System.err.println("Your OS (" + osNameProperty + ") is not compatible, is you have : "
+					+ "\n\t- Windows\n\t- Linux\n\t- Mac OS X\n\t- Solaris\nTry add parameter: -win | -lin | -mac | -sol");
+			System.exit(1);
+		}
 		
 		Game game = new Game(startWidth, startHeight);
 		game.start();
@@ -115,4 +136,11 @@ public class Main{
 	public static boolean isSleep(){
 		return sleep;
 	}
+	
+	public static boolean isOSNameMatch(String osName, String osNamePrefix) {
+        if (osName == null)
+            return false;
+
+        return osName.startsWith(osNamePrefix);
+    }
 }
