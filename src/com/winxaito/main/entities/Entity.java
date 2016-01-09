@@ -13,6 +13,7 @@ public abstract class Entity{
 	protected float drag = 1f;
 	protected float speed = 0.5f;
 	protected float texSize = 16;
+	protected boolean removed;
 	
 	protected Animation anim;
 	protected Texture texture;
@@ -196,5 +197,20 @@ public abstract class Entity{
 	 */
 	public void setSpeed(float speed){
 		this.speed = speed;
+	}
+
+	/**
+	 * GETTER
+	 * @return removed
+	 */
+	public boolean isRemoved(){
+		return removed;
+	}
+
+	/**
+	 * @param removed
+	 */
+	public void setRemoved(boolean removed){
+		this.removed = removed;
 	}
 }

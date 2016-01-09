@@ -8,6 +8,9 @@ import javax.imageio.ImageIO;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.openal.Audio;
+import org.newdawn.slick.openal.AudioLoader;
+import org.newdawn.slick.util.ResourceLoader;
 
 import com.winxaito.main.entities.Boost;
 import com.winxaito.main.entities.Entity;
@@ -21,6 +24,7 @@ public class Level{
 	private int height = 20;
 	private int xSpawn = 2;
 	private int ySpawn = 2;
+	private int boost = 100;
 	private int[] limits = new int[4];
 	private float gravity = 4f;
 	
@@ -31,16 +35,28 @@ public class Level{
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
 	private Player player;
 	
-	private int boost = 100;
+	private Audio music;	
 	
 	/**
 	 * Constructeur de la classe Level
 	 */
 	public Level(){
 		loadLevel("1");
+		try{
+			music = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("/res/music/music.ogg"));
+			music.playAsMusic(0.8f, 0.8f, true);
+		}catch(IOException e){
+			e.printStackTrace();
+		}
 		
 		player = new Player(xSpawn * Tile.getSize(), ySpawn * Tile.getSize(), 1 * Tile.getSize(), this);
-		entities.add(new Boost(3 * Tile.getSize(), 1 * Tile.getSize(), 1 * Tile.getSize(), this));
+		entities.add(new Boost(3 * Tile.getSize() + (int)(Tile.getSize() / 6), 4 * Tile.getSize() + (int)(Tile.getSize() / 6), (int)(Tile.getSize() / 1.5), this));
+		entities.add(new Boost(6 * Tile.getSize() + (int)(Tile.getSize() / 6), 3 * Tile.getSize() + (int)(Tile.getSize() / 6), (int)(Tile.getSize() / 1.5), this));
+		entities.add(new Boost(8 * Tile.getSize() + (int)(Tile.getSize() / 6), 1 * Tile.getSize() + (int)(Tile.getSize() / 6), (int)(Tile.getSize() / 1.5), this));
+		entities.add(new Boost(7 * Tile.getSize() + (int)(Tile.getSize() / 6), 2 * Tile.getSize() + (int)(Tile.getSize() / 6), (int)(Tile.getSize() / 1.5), this));
+		entities.add(new Boost(5 * Tile.getSize() + (int)(Tile.getSize() / 6), 5 * Tile.getSize() + (int)(Tile.getSize() / 6), (int)(Tile.getSize() / 1.5), this));
+		entities.add(new Boost(4 * Tile.getSize() + (int)(Tile.getSize() / 6), 4 * Tile.getSize() + (int)(Tile.getSize() / 6), (int)(Tile.getSize() / 1.5), this));
+		entities.add(new Boost(8 * Tile.getSize() + (int)(Tile.getSize() / 6), 3 * Tile.getSize() + (int)(Tile.getSize() / 6), (int)(Tile.getSize() / 1.5), this));
 	}
 	
 	/**
@@ -115,6 +131,17 @@ public class Level{
 		limits[2] = -width * Tile.getSize() + Display.getWidth();
 		limits[3] = -height * Tile.getSize() + Display.getHeight();
 		
+		ArrayList<Entity> removedEntity = new ArrayList<Entity>();
+		for(Entity entity : entities){
+			if(entity.isRemoved())
+				removedEntity.add(entity);
+			else
+				entity.update();
+		}
+		for(Entity entity : removedEntity){
+			entities.remove(entity);
+		}
+		
 		player.update();
 	}
 	
@@ -130,13 +157,10 @@ public class Level{
 					tile.render();
 			}
 		GL11.glEnd();
-		//Texture.texTiles.unbind();
 		
-		//Texture.texTiles.bind();
 		for(Entity entity : entities){
 			entity.render();
 		}
-		//Texture.texTiles.unbind();
 		
 		//Rendu du joueur
 		player.render();		
@@ -198,5 +222,8 @@ public class Level{
 	 */
 	public void setBoost(int boost){
 		this.boost = boost;
+		
+		if(this.boost < 0)
+			this.boost = 0;
 	}
 }
