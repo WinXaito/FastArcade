@@ -12,17 +12,21 @@ import org.lwjgl.util.glu.GLU;
 
 import com.winxaito.main.Main;
 import com.winxaito.main.game.level.Level;
+import com.winxaito.main.game.menu.Hud;
 
 public class Game{
 	private int width;
 	private int height;
 	private int tps;
 	private int fps;
+	private static int fpsView;
+	private static int tpsView;
 	private int sleep;
 	private boolean running;
 	
 	private GameState gameState = GameState.LEVEL;
 	private Level level;
+	private Hud hud;
 	private float xScroll;
 	private float yScroll;
 	
@@ -52,6 +56,7 @@ public class Game{
 		
 		//Création du level
 		level = new Level();
+		hud = new Hud(level);
 	}
 	
 	/**
@@ -77,32 +82,44 @@ public class Game{
 		long tpsTime = System.nanoTime();
 		long fpsTime = tpsTime;
 		
+		long lastTickTime = System.nanoTime();
+		long lastRenderTime = System.nanoTime();
+		
+		double tickTime = 1_000_000_000.0d / Main.getTpsLimit();
+		double renderTime = 1_000_000_000.0d / Main.getFpsLimit();
+		
+		int ticks = 0;
+		int frames = 0;
+		
+		long timer = System.currentTimeMillis();
+		
 		while(running){
 			if(Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
 				exit();
 			
 			Display.update();	
+			//update();
+			//render();
 			
 			if(!Main.isVSync()){
-				if(System.nanoTime() - tpsTime > 1_000_000_000 / Main.getTpsLimit()){
+				//Si on est en dessous des 60 tps
+				if(System.nanoTime() - lastTickTime > tickTime){
 					update();
+					lastTickTime += tickTime;
 					tps++;
-					
-					tpsTime = System.nanoTime();
-				}else if(System.nanoTime() - fpsTime > 1_000_000_000 / Main.getFpsLimit()){
-					
+				}
+				//Sinon si on est en dessous des 500 fps
+				else if(System.nanoTime() - lastRenderTime > renderTime){
 					render();
+					lastRenderTime += renderTime;
 					fps++;
-					
-					fpsTime = System.nanoTime();
-				}else{
-					sleep++;
-					if(Main.isSleep()){
-						try{
-							Thread.sleep(1);
-						}catch(InterruptedException e){
-							e.printStackTrace();
-						}
+				}
+				//Sinon on endore le Thread
+				else{
+					try {
+						Thread.sleep((int)(1000.0 / Main.getFpsLimit()));
+					} catch (InterruptedException e) {
+						e.printStackTrace();
 					}
 				}
 			}else{
@@ -112,26 +129,21 @@ public class Game{
 				tps++;
 			}
 			
-			if(System.currentTimeMillis() - time > 1000){
-				Display.setTitle(Main.getAppTitle() + " - " + Main.getAppVersion() + "  Fps: " + fps + " Tps: " + tps + " Sleep: " + sleep);
+			//On affiche chaque seconde les ticks et les fps actuel
+			if(System.currentTimeMillis() - timer > 1000){
+				timer += 1000;
+				Display.setTitle(Main.getAppTitle() + " - " + Main.getAppVersion() + "  Fps: " + fps + "/" + Main.getFpsLimit() + 
+						" Tps: " + tps + "/" + Main.getTpsLimit() + " VSync: " + Main.isVSync());
 				
-				if(tps < 50){
+				if(tps < 50)
 					System.err.println("TPS très faible");
-					
-					if(Main.isVSync()){
-						System.err.println("-- Désactivation VSync");
-						Main.setVSync(false);
-					}
-				}
-				
-				if(fps < 40){
+				if(fps < 40)
 					System.err.println("FPS très faible");
-				}
 				
-				time = System.currentTimeMillis();
-				fps = 0;
+				fpsView = fps;
+				tpsView = tps;
 				tps = 0;
-				sleep = 0;
+				fps = 0;
 			}
 		}
 		
@@ -156,6 +168,7 @@ public class Game{
 				break;
 			case LEVEL:
 				level.update();
+				hud.update();
 				float xa = -level.getPlayer().getX() + width / 2 - level.getPlayer().getSize() / 2;
 				float ya = -level.getPlayer().getY() + height / 2 - level.getPlayer().getSize() / 2;
 				translateView(xa, ya);
@@ -181,8 +194,11 @@ public class Game{
 				//Render menu
 				break;
 			case LEVEL:
+				
 				GL11.glTranslatef(xScroll, yScroll, 0);
 				level.render();
+				GL11.glTranslatef(-xScroll, -yScroll, 0);
+				hud.render();
 				break;
 			case OPTIONS_MENU:
 				//Render options-menu
@@ -280,5 +296,12 @@ public class Game{
 	 */
 	public void setGameState(GameState gameState){
 		this.gameState = gameState;
+	}
+	
+	public static int getFps(){
+		return Game.fpsView;
+	}
+	public static int getTps(){
+		return Game.tpsView;
 	}
 }
