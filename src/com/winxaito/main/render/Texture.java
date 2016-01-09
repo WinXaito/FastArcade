@@ -1,5 +1,6 @@
 package com.winxaito.main.render;
 
+
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_RGBA;
 import static org.lwjgl.opengl.GL11.GL_RGBA8;
@@ -24,8 +25,10 @@ import javax.imageio.ImageIO;
 import org.lwjgl.BufferUtils;
 
 public class Texture{
+	public static final Texture texFonts = loadTexture("fonts", "png");
 	public static final Texture texTiles = loadTexture("terrain", "png");
 	public static final Texture texPlayer = loadTexture("player", "png");
+	
 	
 	private int width;
 	private int height;

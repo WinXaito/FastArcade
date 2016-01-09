@@ -1,6 +1,7 @@
 package com.winxaito.main.entities;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.opengl.Texture;
 
 import com.winxaito.main.game.level.Level;
 import com.winxaito.main.utils.Animation;
@@ -14,6 +15,7 @@ public abstract class Entity{
 	protected float texSize = 16;
 	
 	protected Animation anim;
+	protected Texture texture;
 	protected Level level;
 	protected Color color = Color.white;
 	

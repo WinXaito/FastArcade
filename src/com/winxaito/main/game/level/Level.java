@@ -9,6 +9,8 @@ import javax.imageio.ImageIO;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
+import com.winxaito.main.entities.Boost;
+import com.winxaito.main.entities.Entity;
 import com.winxaito.main.entities.Player;
 import com.winxaito.main.game.level.tiles.Tile;
 import com.winxaito.main.game.level.tiles.Tile.Tiles;
@@ -26,7 +28,10 @@ public class Level{
 	private Tile[][] solidTiles;
 	private Tile[][] transparentTiles;
 	
+	private ArrayList<Entity> entities = new ArrayList<Entity>();
 	private Player player;
+	
+	private int boost = 100;
 	
 	/**
 	 * Constructeur de la classe Level
@@ -35,6 +40,7 @@ public class Level{
 		loadLevel("1");
 		
 		player = new Player(xSpawn * Tile.getSize(), ySpawn * Tile.getSize(), 1 * Tile.getSize(), this);
+		entities.add(new Boost(3 * Tile.getSize(), 1 * Tile.getSize(), 1 * Tile.getSize(), this));
 	}
 	
 	/**
@@ -124,10 +130,16 @@ public class Level{
 					tile.render();
 			}
 		GL11.glEnd();
-		Texture.texTiles.unbind();
+		//Texture.texTiles.unbind();
+		
+		//Texture.texTiles.bind();
+		for(Entity entity : entities){
+			entity.render();
+		}
+		//Texture.texTiles.unbind();
 		
 		//Rendu du joueur
-		player.render();
+		player.render();		
 	}
 	
 	/**
@@ -171,5 +183,20 @@ public class Level{
 	 */
 	public int getLimits(int index){
 		return limits[index];
+	}
+
+	/**
+	 * GETTER
+	 * @return boost
+	 */
+	public int getBoost(){
+		return boost;
+	}
+
+	/**
+	 * @param boost
+	 */
+	public void setBoost(int boost){
+		this.boost = boost;
 	}
 }

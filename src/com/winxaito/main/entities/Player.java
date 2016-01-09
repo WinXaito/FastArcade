@@ -29,6 +29,13 @@ public class Player extends Entity{
 		texSize = 4.0f;
 		
 		anim = new Animation(3, 6, true);
+		
+		/*try{
+			texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("/res/textures/player.png"));
+			
+		}catch(IOException e){
+			e.printStackTrace();
+		}*/
 	}
 	
 	@Override
@@ -103,6 +110,5 @@ public class Player extends Entity{
 			Renderer.renderQuad(x, y, size, size, color, direction, anim.getCurrentFrame(), texSize);
 		else
 			Renderer.renderQuad(x, y, size, size, color, direction, 3, texSize);
-		Texture.texPlayer.unbind();
 	}
 }
