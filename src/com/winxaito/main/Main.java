@@ -12,9 +12,9 @@ public class Main{
 	private static int startWidth = 720;
 	private static int startHeight = 480;
 	private static int tpsLimit = 60;
-	private static int fpsLimit = 60;
+	private static int fpsLimit = 600;
 	private static boolean fullScreen = false;
-	private static boolean vSync = true;
+	private static boolean vSync = false;
 	private static boolean sleep = false;
 	
 	private static final String osName = System.getProperty("os.name").toLowerCase();
