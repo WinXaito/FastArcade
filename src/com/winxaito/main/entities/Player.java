@@ -29,13 +29,6 @@ public class Player extends Entity{
 		texSize = 4.0f;
 		
 		anim = new Animation(3, 6, true);
-		
-		/*try{
-			texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("/res/textures/player.png"));
-			
-		}catch(IOException e){
-			e.printStackTrace();
-		}*/
 	}
 	
 	@Override
@@ -52,14 +45,16 @@ public class Player extends Entity{
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE) && isGrounded()){
 			//Jump (saut)
-			
 			ya -= 16f;
 		}
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_W)){
 			//Déplacement vers le haut
-			ya -= speed * 3;
-			z = 1;
+			if(level.getBoost() > 0){
+				ya -= speed * 3;
+				z = 1;
+				level.setBoost(level.getBoost() - 1);
+			}
 		}
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_S)){
