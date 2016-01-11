@@ -40,7 +40,7 @@ public class Boost extends Entity{
 		   level.getPlayer().getY() > y - 42 && level.getPlayer().getY() < y + 42){
 			level.setBoost(level.getBoost() + quantity);
 			removed = true;
-			audioBoost.playAsSoundEffect(1.0f, 1.0f, false);
+			audioBoost.playAsSoundEffect(1.0f, 0.2f, false);
 		}
 		
 		anim.start();

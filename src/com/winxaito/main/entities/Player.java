@@ -10,6 +10,8 @@ import com.winxaito.main.utils.Animation;
 public class Player extends Entity{
 	private int xo = 0, yo = 0;
 	private int direction = 1;
+	private float speedXMultiplicator;
+	private float speedYMultiplicator;
 	private Level level;
 	int z = 0;
 		
@@ -39,41 +41,48 @@ public class Player extends Entity{
 		ya += level.getGravity() * mass;
 		
 		if(isGrounded())
-			drag = 0.85f;
+			drag = 0.80f;
 		else
 			drag = 0.9f;
 		
+		speedXMultiplicator = 1;
+		speedYMultiplicator = 1;
+		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
+			if(level.getBoost() > 0){
+				level.setBoost(level.getBoost() - 1);
+				speedXMultiplicator = 2;
+				speedYMultiplicator = 1.4f;
+			}
+		}
+		
 		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE) && isGrounded()){
 			//Jump (saut)
-			ya -= 16f;
+			ya -= 25f;
 		}
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_W)){
 			//Déplacement vers le haut
-			if(level.getBoost() > 0){
-				ya -= speed * 3;
-				z = 1;
-				level.setBoost(level.getBoost() - 1);
-			}
+			ya -= speed * 3 * speedYMultiplicator;
+			z = 1;
 		}
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_S)){
 			//Déplacement vers le bas
-			ya += speed;
+			ya += speed * speedYMultiplicator;
 		}
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_D)){
 			//Déplacement vers la droite
 			anim.start();
 			direction = 1;
-			xa += speed;
+			xa += speed * speedXMultiplicator;
 		}
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_A)){
 			//Déplacement vers la gauche
 			anim.start();
 			direction = 2;
-			xa -= speed;
+			xa -= speed * speedXMultiplicator;
 		}
 		
 		
