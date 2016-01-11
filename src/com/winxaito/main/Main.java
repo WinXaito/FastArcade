@@ -12,9 +12,10 @@ public class Main{
 	private static int startWidth = 720;
 	private static int startHeight = 480;
 	private static int tpsLimit = 60;
-	private static int fpsLimit = 600;
+	private static int fpsLimit = 50;
 	private static boolean fullScreen = false;
-	private static boolean vSync = false;
+	private static boolean borderless = false;
+	private static boolean vSync = true;
 	private static boolean sleep = false;
 	
 	private static final String osName = System.getProperty("os.name").toLowerCase();
@@ -114,6 +115,14 @@ public class Main{
 	}
 	
 	/**
+	 * Retourne si le jeu doit être lancé en Borderless (Sans bord)
+	 * @return borderless
+	 */
+	public static boolean isBorderless(){
+		return borderless;
+	}
+
+	/**
 	 * Retourne si le jeu doit être en mode VSync
 	 * @return vSync
 	 */
@@ -137,6 +146,12 @@ public class Main{
 		return sleep;
 	}
 	
+	/**
+	 * Check l'OS 
+	 * @param osName
+	 * @param osNamePrefix
+	 * @return
+	 */
 	public static boolean isOSNameMatch(String osName, String osNamePrefix) {
         if (osName == null)
             return false;

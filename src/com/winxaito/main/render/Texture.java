@@ -25,7 +25,9 @@ import javax.imageio.ImageIO;
 import org.lwjgl.BufferUtils;
 
 public class Texture{
-	public static final Texture texFonts = loadTexture("fonts", "png");
+	public static final Texture texWhite = loadTexture("white", "png");
+	public static final Texture texMenuBackground = loadTexture("menuBackground", "png");
+	public static final Texture texMenuButton = loadTexture("ButtonMenu", "png");
 	public static final Texture textBoost_100 = loadTexture("boost", "png");
 	public static final Texture texTiles = loadTexture("terrain", "png");
 	public static final Texture texPlayer = loadTexture("player", "png");

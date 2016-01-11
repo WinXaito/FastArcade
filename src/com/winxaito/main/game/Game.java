@@ -13,6 +13,9 @@ import org.lwjgl.util.glu.GLU;
 import com.winxaito.main.Main;
 import com.winxaito.main.game.level.Level;
 import com.winxaito.main.game.menu.Hud;
+import com.winxaito.main.game.menu.LevelMenu;
+import com.winxaito.main.game.menu.LoadingMenu;
+import com.winxaito.main.game.menu.MainMenu;
 
 public class Game{
 	private int width;
@@ -24,9 +27,12 @@ public class Game{
 	private int sleep;
 	private boolean running;
 	
-	private GameState gameState = GameState.LEVEL;
+	private GameState gameState = GameState.MainMenu;
 	private Level level;
 	private Hud hud;
+	private MainMenu menu;
+	private LevelMenu levelMenu;
+	private LoadingMenu loaderMenu;
 	private float xScroll;
 	private float yScroll;
 	
@@ -34,9 +40,21 @@ public class Game{
 	 * Etats de jeu (Menu, level, etc.)
 	 */
 	public enum GameState{
-		MAIN_MENU,
-		LEVEL,
-		OPTIONS_MENU
+		MainMenu,
+		LevelMenu(MainMenu),
+		OptionsMenu(MainMenu),
+		Level(LevelMenu),
+		LevelLoading(LevelMenu);
+		
+		protected GameState escapteGoTo;
+		
+		GameState(){
+			this.escapteGoTo = null;
+		}
+		
+		GameState(GameState escapteGoTo){
+			this.escapteGoTo = escapteGoTo;
+		}
 	}
 	
 	/**
@@ -54,9 +72,11 @@ public class Game{
 		//Initialisation de la vue
 		initializeView();
 		
-		//Création du level
-		level = new Level();
-		hud = new Hud(level);
+		//Création du menu
+		menu = new MainMenu(this);
+		
+		//Création LevelMenu
+		levelMenu = new LevelMenu(this);
 	}
 	
 	/**
@@ -94,12 +114,10 @@ public class Game{
 		long timer = System.currentTimeMillis();
 		
 		while(running){
-			if(Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
+			if(Display.isCloseRequested())
 				exit();
 			
-			Display.update();	
-			//update();
-			//render();
+			Display.update();
 			
 			if(!Main.isVSync()){
 				//Si on est en dessous des 60 tps
@@ -162,18 +180,43 @@ public class Game{
 	 * Update du jeu (Correspond au TPS)
 	 */
 	public void update(){
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_0))
+			System.out.println("Key 0");
+		
+		while (Keyboard.next()) {
+		    if (Keyboard.getEventKeyState()) {
+		        if (Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
+		        	if(gameState.escapteGoTo != null){
+		        		if(gameState == GameState.Level)
+		        			level.unloadLevel();
+		        		
+		        		setGameState(gameState.escapteGoTo);
+		        	}else{
+		        		exit();
+		        	}
+		        }
+		    }
+		}
+		
 		switch(gameState){
-			case MAIN_MENU:
-				//Update menu
+			case MainMenu:					
+				menu.update();
 				break;
-			case LEVEL:
+			case LevelMenu:
+				levelMenu.update();
+				break;
+			case Level:
 				level.update();
 				hud.update();
 				float xa = -level.getPlayer().getX() + width / 2 - level.getPlayer().getSize() / 2;
 				float ya = -level.getPlayer().getY() + height / 2 - level.getPlayer().getSize() / 2;
 				translateView(xa, ya);
 				break;
-			case OPTIONS_MENU:
+			case LevelLoading:
+				
+				break;
+			case OptionsMenu:
 				//Update Options-menu
 				break;
 		}
@@ -190,20 +233,32 @@ public class Game{
 		initializeView();
 		
 		switch(gameState){
-			case MAIN_MENU:
-				//Render menu
+			case MainMenu:
+				menu.render();
 				break;
-			case LEVEL:
-				
+			case LevelMenu:
+				levelMenu.render();
+				break;
+			case Level:					
 				GL11.glTranslatef(xScroll, yScroll, 0);
 				level.render();
 				GL11.glTranslatef(-xScroll, -yScroll, 0);
 				hud.render();
 				break;
-			case OPTIONS_MENU:
+			case LevelLoading:
+				
+				break;
+			case OptionsMenu:
 				//Render options-menu
 				break;
 		}
+	}
+	
+	public void loadLevel(String levelName){
+		level = new Level(this, levelName);
+		hud = new Hud(level);
+		
+		setGameState(GameState.Level);
 	}
 	
 	/**
@@ -267,6 +322,11 @@ public class Game{
 				if(displayMode != null){
 					Display.setDisplayModeAndFullscreen(displayMode);
 				}
+			}else if(Main.isBorderless()){
+				System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
+				displayMode = new DisplayMode((int)screenWidth, (int)screenHeight);
+				Display.setDisplayMode(displayMode);
+				Display.setResizable(false);
 			}else{
 				displayMode = new DisplayMode(Main.getStartWidth(), Main.getStartHeight());
 				Display.setDisplayMode(displayMode);

@@ -15,8 +15,10 @@ import org.newdawn.slick.util.ResourceLoader;
 import com.winxaito.main.entities.Boost;
 import com.winxaito.main.entities.Entity;
 import com.winxaito.main.entities.Player;
+import com.winxaito.main.game.Game;
 import com.winxaito.main.game.level.tiles.Tile;
 import com.winxaito.main.game.level.tiles.Tile.Tiles;
+import com.winxaito.main.game.menu.LoadingMenu;
 import com.winxaito.main.render.Texture;
 
 public class Level{
@@ -26,7 +28,9 @@ public class Level{
 	private int ySpawn = 2;
 	private int boost = 100;
 	private int[] limits = new int[4];
-	private float gravity = 4f;
+	private float gravity = 4.4f;
+	
+	private LoadingMenu loaderMenu;
 	
 	private ArrayList<Tile> tiles = new ArrayList<Tile>();
 	private Tile[][] solidTiles;
@@ -40,8 +44,11 @@ public class Level{
 	/**
 	 * Constructeur de la classe Level
 	 */
-	public Level(){
-		loadLevel("1");
+	public Level(Game game, String levelName){
+		//Création du LoaderMenu
+		loaderMenu = new LoadingMenu(game, "Chargement du level: " + levelName);
+		
+		loadLevel(levelName);
 		try{
 			music = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("/res/music/music.ogg"));
 			music.playAsMusic(0.8f, 0.8f, true);
@@ -50,13 +57,6 @@ public class Level{
 		}
 		
 		player = new Player(xSpawn * Tile.getSize(), ySpawn * Tile.getSize(), 1 * Tile.getSize(), this);
-		entities.add(new Boost(3 * Tile.getSize() + (int)(Tile.getSize() / 6), 4 * Tile.getSize() + (int)(Tile.getSize() / 6), (int)(Tile.getSize() / 1.5), this));
-		entities.add(new Boost(6 * Tile.getSize() + (int)(Tile.getSize() / 6), 3 * Tile.getSize() + (int)(Tile.getSize() / 6), (int)(Tile.getSize() / 1.5), this));
-		entities.add(new Boost(8 * Tile.getSize() + (int)(Tile.getSize() / 6), 1 * Tile.getSize() + (int)(Tile.getSize() / 6), (int)(Tile.getSize() / 1.5), this));
-		entities.add(new Boost(7 * Tile.getSize() + (int)(Tile.getSize() / 6), 2 * Tile.getSize() + (int)(Tile.getSize() / 6), (int)(Tile.getSize() / 1.5), this));
-		entities.add(new Boost(5 * Tile.getSize() + (int)(Tile.getSize() / 6), 5 * Tile.getSize() + (int)(Tile.getSize() / 6), (int)(Tile.getSize() / 1.5), this));
-		entities.add(new Boost(4 * Tile.getSize() + (int)(Tile.getSize() / 6), 4 * Tile.getSize() + (int)(Tile.getSize() / 6), (int)(Tile.getSize() / 1.5), this));
-		entities.add(new Boost(8 * Tile.getSize() + (int)(Tile.getSize() / 6), 3 * Tile.getSize() + (int)(Tile.getSize() / 6), (int)(Tile.getSize() / 1.5), this));
 	}
 	
 	/**
@@ -96,12 +96,7 @@ public class Level{
 				}else if(pixels[x + y * width] == 0xFF000000){
 					//TransparentTile
 					transparentTiles[x][y] = new Tile(x, y, Tiles.BACKGROUND);
-				}else if(pixels[x + y * width] == 0xFFffff00 || 
-						 pixels[x + y * width] == 0xFFffff01 ||
-						 pixels[x + y * width] == 0xFFffff02 ||
-						 pixels[x + y * width] == 0xFFffff03 ||
-						 pixels[x + y * width] == 0xFFffff04 ||
-						 pixels[x + y * width] == 0xFFffff05){
+				}else if(pixels[x + y * width] == 0xFFffff00){
 					//SpawnTile
 					transparentTiles[x][y] = new Tile(x, y, Tiles.BACKGROUND);
 					xSpawn = x;
@@ -121,12 +116,41 @@ public class Level{
 				this.tiles.add(tile);
 			}
 		}
+		
+		try{
+			//Lecture de l'image
+			image = ImageIO.read(Level.class.getResource("/levels/level_" + name + "/level_" + name + "_entities.png"));
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		
+		width = image.getWidth();
+		height = image.getHeight();
+		
+		//Création d'un tableau contenu les pixels du level chargé
+		pixels = new int[width * height];
+		image.getRGB(0, 0, width, height, pixels, 0, width);
+				
+		//loading des entités
+		for(int x = 0; x < width; x++){
+			for(int y = 0; y < height; y++){
+				if(pixels[x + y * width] == 0xFFFFAA00){
+					System.out.println("YEEEEEEEEP");
+					entities.add(new Boost(x * Tile.getSize() + (int)(Tile.getSize() / 6), 
+							y * Tile.getSize() + (int)(Tile.getSize() / 6), (int)(Tile.getSize() / 1.5), this));
+				}
+			}
+		}
+	}
+	
+	public void unloadLevel(){
+		music.stop();
 	}
 	
 	/**
 	 * Update du level (Appeler par la fonction update de la classe Game)
 	 */
-	public void update(){
+	public void update(){		
 		//Limite droite et bas du level
 		limits[2] = -width * Tile.getSize() + Display.getWidth();
 		limits[3] = -height * Tile.getSize() + Display.getHeight();
@@ -210,7 +234,7 @@ public class Level{
 	}
 
 	/**
-	 * GETTER
+	 * Retourne le boost que possède le joueur
 	 * @return boost
 	 */
 	public int getBoost(){
