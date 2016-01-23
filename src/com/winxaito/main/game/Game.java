@@ -27,7 +27,7 @@ public class Game{
 	private int sleep;
 	private boolean running;
 	
-	private GameState gameState = GameState.MainMenu;
+	private GameState gameState = GameState.GameStarting;
 	private Level level;
 	private Hud hud;
 	private MainMenu menu;
@@ -44,7 +44,7 @@ public class Game{
 		LevelMenu(MainMenu),
 		OptionsMenu(MainMenu),
 		Level(LevelMenu),
-		LevelLoading(LevelMenu);
+		GameStarting;
 		
 		protected GameState escapteGoTo;
 		
@@ -71,6 +71,9 @@ public class Game{
 		
 		//Initialisation de la vue
 		initializeView();
+		
+		//Initialisation du Menu Loading (Chargement du démarrage)
+		initializeLoadingMenu();
 		
 		//Création du menu
 		menu = new MainMenu(this);
@@ -167,7 +170,8 @@ public class Game{
 		
 		exit();
 	}
-	
+
+
 	/**
 	 * Quitte le jeu
 	 */
@@ -213,7 +217,7 @@ public class Game{
 				float ya = -level.getPlayer().getY() + height / 2 - level.getPlayer().getSize() / 2;
 				translateView(xa, ya);
 				break;
-			case LevelLoading:
+			case GameStarting:
 				
 				break;
 			case OptionsMenu:
@@ -245,8 +249,8 @@ public class Game{
 				GL11.glTranslatef(-xScroll, -yScroll, 0);
 				hud.render();
 				break;
-			case LevelLoading:
-				
+			case GameStarting:
+				loaderMenu.render();
 				break;
 			case OptionsMenu:
 				//Render options-menu
@@ -259,6 +263,12 @@ public class Game{
 		hud = new Hud(level);
 		
 		setGameState(GameState.Level);
+		
+		try{
+			Thread.sleep(3);
+		}catch(InterruptedException e){
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -279,6 +289,11 @@ public class Game{
 			xScroll = level.getLimits(0);
 		if(yScroll > level.getLimits(1))
 			yScroll = level.getLimits(1);
+	}
+	
+	public void initializeLoadingMenu(){
+		loaderMenu = new LoadingMenu(this, "Lancement de FastArcade");
+		loaderMenu.render();
 	}
 	
 	/**

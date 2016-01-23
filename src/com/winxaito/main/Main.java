@@ -3,6 +3,7 @@ package com.winxaito.main;
 import java.io.File;
 
 import com.winxaito.main.game.Game;
+import com.winxaito.main.utils.XMLLoader;
 
 public class Main{
 	private static String appTitle = "FastArcade";
@@ -45,7 +46,7 @@ public class Main{
 					+ "\n\t- Windows\n\t- Linux\n\t- Mac OS X\n\t- Solaris\nTry add parameter: -win | -lin | -mac | -sol");
 			System.exit(1);
 		}
-		
+				
 		Game game = new Game(startWidth, startHeight);
 		game.start();
 	}

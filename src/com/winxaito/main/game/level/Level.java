@@ -67,7 +67,7 @@ public class Level{
 		BufferedImage image = null;
 		try{
 			//Lecture de l'image
-			image = ImageIO.read(Level.class.getResource("/levels/" + name + ".png"));
+			image = ImageIO.read(Level.class.getResource("/levels/level_" + name + "/level_" + name + ".png"));
 		}catch(IOException e){
 			e.printStackTrace();
 		}

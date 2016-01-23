@@ -97,6 +97,36 @@ public class Button{
 		TextureImpl.bindNone();
 		font.drawString(x + width / 2 - font.getWidth(text) / 2, y + height / 2 - font.getHeight(text) / 2, text, Color.black);
 	}
+	
+	/**
+	 * Retourne la position en X du bouton
+	 * @return x
+	 */
+	public int getX(){
+		return x;
+	}
+
+	/**
+	 * @param x
+	 */
+	public void setX(int x){
+		this.x = x - width / 2;
+	}
+
+	/**
+	 * Retourne la position en Y du bouton
+	 * @return y
+	 */
+	public int getY(){
+		return y;
+	}
+
+	/**
+	 * @param y
+	 */
+	public void setY(int y){
+		this.y = y - height / 2;
+	}
 
 	/**
 	 * Si la souris est sur le bouton

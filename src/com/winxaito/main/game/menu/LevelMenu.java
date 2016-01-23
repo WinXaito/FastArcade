@@ -8,7 +8,8 @@ public class LevelMenu{
 	private Game game;
 	
 	public enum LevelList{
-		Level1("1", 0, 1, new Button(Display.getWidth() / 2, 50, "Jouer"), new Button(Display.getWidth() / 2, 150, "Supprimer"));
+		Level1("1", 0, 1, new Button(Display.getWidth() / 2, 50, "Jouer 1"), new Button(Display.getWidth() / 2, 150, "Supprimer")),
+		LevelFirst("first", 1, 2, new Button(Display.getWidth() / 2, 300, "Jouer First"), new Button(Display.getWidth() / 2, 400, "Supprimer"));
 		
 		protected String name;
 		protected int id;

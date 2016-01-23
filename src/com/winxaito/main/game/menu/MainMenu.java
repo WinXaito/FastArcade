@@ -28,12 +28,12 @@ public class MainMenu{
 	private Audio music;	
 	
     public MainMenu(Game game){
-    	try{
-			music = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("/res/music/home.ogg"));
-			music.playAsMusic(1f, 0.8f, true);
+    	/*try{
+			//music = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("/res/music/home.ogg"));
+			//music.playAsMusic(1f, 0.8f, true);
 		}catch(IOException e){
 			e.printStackTrace();
-		}
+		}*/
     	
     	buttonPlay = new Button(Display.getWidth() / 2, 50, "Jouer");
     	buttonOptions = new Button(Display.getWidth() / 2, 150, "Options");
@@ -43,8 +43,11 @@ public class MainMenu{
     }
     
     public void update(){
+    	buttonPlay.setX(Display.getWidth() / 2);
     	buttonPlay.update();
+    	buttonOptions.setX(Display.getWidth() / 2);
     	buttonOptions.update();
+    	buttonExit.setX(Display.getWidth() / 2);
     	buttonExit.update();
     	
     	while(Mouse.next()){
