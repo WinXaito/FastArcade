@@ -1,4 +1,4 @@
-package com.winxaito.main.entities;
+package com.winxaito.fastarcade.entities;
 
 import java.io.IOException;
 
@@ -6,10 +6,10 @@ import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.openal.AudioLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
-import com.winxaito.main.game.level.Level;
-import com.winxaito.main.render.Renderer;
-import com.winxaito.main.render.Texture;
-import com.winxaito.main.utils.Animation;
+import com.winxaito.fastarcade.game.level.Level;
+import com.winxaito.fastarcade.render.Renderer;
+import com.winxaito.fastarcade.render.Texture;
+import com.winxaito.fastarcade.utils.Animation;
 
 public class Boost extends Entity{
 	private int quantity;

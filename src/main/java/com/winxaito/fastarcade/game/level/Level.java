@@ -1,4 +1,4 @@
-package com.winxaito.main.game.level;
+package com.winxaito.fastarcade.game.level;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -12,14 +12,14 @@ import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.openal.AudioLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
-import com.winxaito.main.entities.Boost;
-import com.winxaito.main.entities.Entity;
-import com.winxaito.main.entities.Player;
-import com.winxaito.main.game.Game;
-import com.winxaito.main.game.level.tiles.Tile;
-import com.winxaito.main.game.level.tiles.Tile.Tiles;
-import com.winxaito.main.game.menu.LoadingMenu;
-import com.winxaito.main.render.Texture;
+import com.winxaito.fastarcade.entities.Boost;
+import com.winxaito.fastarcade.entities.Entity;
+import com.winxaito.fastarcade.entities.Player;
+import com.winxaito.fastarcade.game.Game;
+import com.winxaito.fastarcade.game.level.tiles.Tile;
+import com.winxaito.fastarcade.game.level.tiles.Tile.Tiles;
+import com.winxaito.fastarcade.game.menu.LoadingMenu;
+import com.winxaito.fastarcade.render.Texture;
 
 public class Level{
 	private int width = 20;

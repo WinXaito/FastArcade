@@ -1,8 +1,8 @@
-package com.winxaito.main.game.level.tiles;
+package com.winxaito.fastarcade.game.level.tiles;
 
 import org.newdawn.slick.Color;
 
-import com.winxaito.main.render.Renderer;
+import com.winxaito.fastarcade.render.Renderer;
 
 public class Tile{
 	private static int size = 64;

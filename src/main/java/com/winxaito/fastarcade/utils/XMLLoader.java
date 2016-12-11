@@ -1,4 +1,4 @@
-package com.winxaito.main.utils;
+package com.winxaito.fastarcade.utils;
 
 import java.io.File;
 import java.io.IOException;

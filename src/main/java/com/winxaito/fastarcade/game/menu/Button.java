@@ -1,4 +1,4 @@
-package com.winxaito.main.game.menu;
+package com.winxaito.fastarcade.game.menu;
 
 import java.awt.Font;
 
@@ -8,8 +8,8 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.TextureImpl;
 
-import com.winxaito.main.render.Renderer;
-import com.winxaito.main.render.Texture;
+import com.winxaito.fastarcade.render.Renderer;
+import com.winxaito.fastarcade.render.Texture;
 
 public class Button{
 	private int x = 0;

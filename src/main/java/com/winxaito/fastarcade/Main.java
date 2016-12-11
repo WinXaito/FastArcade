@@ -1,9 +1,8 @@
-package com.winxaito.main;
+package com.winxaito.fastarcade;
 
 import java.io.File;
 
-import com.winxaito.main.game.Game;
-import com.winxaito.main.utils.XMLLoader;
+import com.winxaito.fastarcade.game.Game;
 
 public class Main{
 	private static String appTitle = "FastArcade";

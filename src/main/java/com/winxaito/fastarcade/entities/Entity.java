@@ -1,10 +1,10 @@
-package com.winxaito.main.entities;
+package com.winxaito.fastarcade.entities;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 
-import com.winxaito.main.game.level.Level;
-import com.winxaito.main.utils.Animation;
+import com.winxaito.fastarcade.game.level.Level;
+import com.winxaito.fastarcade.utils.Animation;
 
 public abstract class Entity{
 	protected int xo, yo, size;

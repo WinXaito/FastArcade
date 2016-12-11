@@ -1,11 +1,11 @@
-package com.winxaito.main.game.menu;
+package com.winxaito.fastarcade.game.menu;
 
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.Color;
 
-import com.winxaito.main.game.Game;
-import com.winxaito.main.render.Renderer;
-import com.winxaito.main.render.Texture;
+import com.winxaito.fastarcade.game.Game;
+import com.winxaito.fastarcade.render.Renderer;
+import com.winxaito.fastarcade.render.Texture;
 
 public class LoadingMenu extends Menu{
 	private String text;

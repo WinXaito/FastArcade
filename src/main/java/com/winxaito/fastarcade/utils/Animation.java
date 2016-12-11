@@ -1,4 +1,4 @@
-package com.winxaito.main.utils;
+package com.winxaito.fastarcade.utils;
 
 public class Animation{
 	private int frame = 0;

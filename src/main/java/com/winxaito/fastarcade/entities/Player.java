@@ -1,11 +1,11 @@
-package com.winxaito.main.entities;
+package com.winxaito.fastarcade.entities;
 
 import org.lwjgl.input.Keyboard;
 
-import com.winxaito.main.game.level.Level;
-import com.winxaito.main.render.Renderer;
-import com.winxaito.main.render.Texture;
-import com.winxaito.main.utils.Animation;
+import com.winxaito.fastarcade.game.level.Level;
+import com.winxaito.fastarcade.render.Renderer;
+import com.winxaito.fastarcade.render.Texture;
+import com.winxaito.fastarcade.utils.Animation;
 
 public class Player extends Entity{
 	private int xo = 0, yo = 0;

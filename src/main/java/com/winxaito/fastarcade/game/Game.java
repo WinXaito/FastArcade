@@ -1,4 +1,4 @@
-package com.winxaito.main.game;
+package com.winxaito.fastarcade.game;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -10,12 +10,12 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
-import com.winxaito.main.Main;
-import com.winxaito.main.game.level.Level;
-import com.winxaito.main.game.menu.Hud;
-import com.winxaito.main.game.menu.LevelMenu;
-import com.winxaito.main.game.menu.LoadingMenu;
-import com.winxaito.main.game.menu.MainMenu;
+import com.winxaito.fastarcade.Main;
+import com.winxaito.fastarcade.game.level.Level;
+import com.winxaito.fastarcade.game.menu.Hud;
+import com.winxaito.fastarcade.game.menu.LevelMenu;
+import com.winxaito.fastarcade.game.menu.LoadingMenu;
+import com.winxaito.fastarcade.game.menu.MainMenu;
 
 public class Game{
 	private int width;

@@ -1,4 +1,4 @@
-package com.winxaito.main.game.menu;
+package com.winxaito.fastarcade.game.menu;
 
 import java.awt.Font;
 
@@ -6,8 +6,8 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.TextureImpl;
 
-import com.winxaito.main.game.Game;
-import com.winxaito.main.game.level.Level;
+import com.winxaito.fastarcade.game.Game;
+import com.winxaito.fastarcade.game.level.Level;
 
 public class Hud{
 	private Level level;

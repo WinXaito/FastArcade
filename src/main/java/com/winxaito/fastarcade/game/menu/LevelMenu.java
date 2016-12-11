@@ -1,8 +1,8 @@
-package com.winxaito.main.game.menu;
+package com.winxaito.fastarcade.game.menu;
 
 import org.lwjgl.opengl.Display;
 
-import com.winxaito.main.game.Game;
+import com.winxaito.fastarcade.game.Game;
 
 public class LevelMenu{	
 	private Game game;

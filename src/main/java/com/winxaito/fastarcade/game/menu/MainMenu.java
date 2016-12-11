@@ -1,19 +1,15 @@
-package com.winxaito.main.game.menu;
-
-import java.io.IOException;
+package com.winxaito.fastarcade.game.menu;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.openal.Audio;
-import org.newdawn.slick.openal.AudioLoader;
-import org.newdawn.slick.util.ResourceLoader;
 
-import com.winxaito.main.game.Game;
-import com.winxaito.main.game.Game.GameState;
-import com.winxaito.main.render.Renderer;
-import com.winxaito.main.render.Texture;
+import com.winxaito.fastarcade.game.Game;
+import com.winxaito.fastarcade.game.Game.GameState;
+import com.winxaito.fastarcade.render.Renderer;
+import com.winxaito.fastarcade.render.Texture;
 
 public class MainMenu{
 	private int mainButtonWidth = 250;

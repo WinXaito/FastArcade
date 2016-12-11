@@ -1,4 +1,4 @@
-package com.winxaito.main.render;
+package com.winxaito.fastarcade.render;
 
 
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
