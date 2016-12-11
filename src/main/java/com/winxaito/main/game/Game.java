@@ -66,19 +66,19 @@ public class Game{
 		this.width = width;
 		this.height = height;
 		
-		//initialisation de la fenêtre
+		//initialisation de la fenÃªtre
 		initializeDisplay();
 		
 		//Initialisation de la vue
 		initializeView();
 		
-		//Initialisation du Menu Loading (Chargement du démarrage)
+		//Initialisation du Menu Loading (Chargement du dÃ©marrage)
 		initializeLoadingMenu();
 		
-		//Création du menu
+		//CrÃ©ation du menu
 		menu = new MainMenu(this);
 		
-		//Création LevelMenu
+		//CrÃ©ation LevelMenu
 		levelMenu = new LevelMenu(this);
 	}
 	
@@ -91,7 +91,7 @@ public class Game{
 	}
 	
 	/**
-	 * Fonction d'arrêt de jeu
+	 * Fonction d'arrÃªt de jeu
 	 */
 	public void stop(){
 		running = false;
@@ -157,9 +157,9 @@ public class Game{
 						" Tps: " + tps + "/" + Main.getTpsLimit() + " VSync: " + Main.isVSync());
 				
 				if(tps < 50)
-					System.err.println("TPS très faible");
+					System.err.println("TPS trÃ¨s faible");
 				if(fps < 40)
-					System.err.println("FPS très faible");
+					System.err.println("FPS trÃ¨s faible");
 				
 				fpsView = fps;
 				tpsView = tps;
@@ -272,7 +272,7 @@ public class Game{
 	}
 	
 	/**
-	 * Déplacement du level
+	 * DÃ©placement du level
 	 * @param xa
 	 * @param ya
 	 */
@@ -297,7 +297,7 @@ public class Game{
 	}
 	
 	/**
-	 * Initialisation des paramètres OpenGL (2D)
+	 * Initialisation des paramÃ¨tres OpenGL (2D)
 	 */
 	public void initializeView(){
 		GL11.glViewport(0, 0, width, height);
@@ -316,7 +316,7 @@ public class Game{
 	}
 	
 	/**
-	 * Initialisation de l'écran (Display)
+	 * Initialisation de l'Ã©cran (Display)
 	 */
 	public void initializeDisplay(){
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

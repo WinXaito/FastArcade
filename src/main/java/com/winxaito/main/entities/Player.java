@@ -61,25 +61,25 @@ public class Player extends Entity{
 		}
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_W)){
-			//Déplacement vers le haut
+			//DÃ©placement vers le haut
 			ya -= speed * 3 * speedYMultiplicator;
 			z = 1;
 		}
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_S)){
-			//Déplacement vers le bas
+			//DÃ©placement vers le bas
 			ya += speed * speedYMultiplicator;
 		}
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-			//Déplacement vers la droite
+			//DÃ©placement vers la droite
 			anim.start();
 			direction = 1;
 			xa += speed * speedXMultiplicator;
 		}
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-			//Déplacement vers la gauche
+			//DÃ©placement vers la gauche
 			anim.start();
 			direction = 2;
 			xa -= speed * speedXMultiplicator;

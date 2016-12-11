@@ -39,7 +39,7 @@ public class Button{
 	}
 	
 	/**
-	 * Constructeur surchargé
+	 * Constructeur surchargÃ©
 	 * @param x
 	 * @param y
 	 * @param width
@@ -137,7 +137,7 @@ public class Button{
 	}
 
 	/**
-	 * Si la souris est sur le bouton et pressé (Click)
+	 * Si la souris est sur le bouton et pressÃ© (Click)
 	 * @return click
 	 */
 	public boolean isClick(){

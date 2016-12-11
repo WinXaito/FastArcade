@@ -45,7 +45,7 @@ public class Level{
 	 * Constructeur de la classe Level
 	 */
 	public Level(Game game, String levelName){
-		//Création du LoaderMenu
+		//CrÃ©ation du LoaderMenu
 		loaderMenu = new LoadingMenu(game, "Chargement du level: " + levelName);
 		
 		loadLevel(levelName);
@@ -79,11 +79,11 @@ public class Level{
 		limits[0] = 0;
 		limits[1] = 0;
 		
-		//Création d'un tableau contenu les pixels du level chargé
+		//CrÃ©ation d'un tableau contenu les pixels du level chargÃ©
 		pixels = new int[width * height];
 		image.getRGB(0, 0, width, height, pixels, 0, width);
 		
-		//Création de tableaux contenants les tiles
+		//CrÃ©ation de tableaux contenants les tiles
 		solidTiles = new Tile[width][height];
 		transparentTiles = new Tile[width][height];
 		
@@ -127,11 +127,11 @@ public class Level{
 		width = image.getWidth();
 		height = image.getHeight();
 		
-		//Création d'un tableau contenu les pixels du level chargé
+		//CrÃ©ation d'un tableau contenu les pixels du level chargÃ©
 		pixels = new int[width * height];
 		image.getRGB(0, 0, width, height, pixels, 0, width);
 				
-		//loading des entités
+		//loading des entitÃ©s
 		for(int x = 0; x < width; x++){
 			for(int y = 0; y < height; y++){
 				if(pixels[x + y * width] == 0xFFFFAA00){
@@ -199,7 +199,7 @@ public class Level{
 	}
 	
 	/**
-	 * Indique si la taille à la position passé en paramètre est solide (Si pas le cas, retourne null)
+	 * Indique si la taille Ã  la position passÃ© en paramÃ¨tre est solide (Si pas le cas, retourne null)
 	 * @param x
 	 * @param y
 	 * @return Tile
@@ -234,7 +234,7 @@ public class Level{
 	}
 
 	/**
-	 * Retourne le boost que possède le joueur
+	 * Retourne le boost que possÃ¨de le joueur
 	 * @return boost
 	 */
 	public int getBoost(){

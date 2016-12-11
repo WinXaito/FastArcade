@@ -38,7 +38,7 @@ public class Texture{
 	public int id;
 	
 	/**
-	 * Constructeur (Utilisé par "loadTexture")
+	 * Constructeur (UtilisÃ© par "loadTexture")
 	 * @param width
 	 * @param height
 	 * @param id
@@ -67,7 +67,7 @@ public class Texture{
 		int width = image.getWidth();
 		int height = image.getHeight();
 		
-		//Création d'un tableau contenants les pixels de l'image
+		//CrÃ©ation d'un tableau contenants les pixels de l'image
 		int[] pixels = new int[width * height];
 		image.getRGB(0, 0, width, height, pixels, 0, width);
 		
@@ -85,7 +85,7 @@ public class Texture{
 		
 		buffer.flip();
 		
-		//Génération de la texture OpenGL
+		//GÃ©nÃ©ration de la texture OpenGL
 		int id = glGenTextures();
 		glBindTexture(GL_TEXTURE_2D, id);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -108,7 +108,7 @@ public class Texture{
 	}
 	
 	/**
-	 * Enlève la texture
+	 * EnlÃ¨ve la texture
 	 */
 	public void unbind(){
 		glBindTexture(GL_TEXTURE_2D, 0);

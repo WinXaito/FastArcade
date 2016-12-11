@@ -34,12 +34,12 @@ public abstract class Entity{
 	}
 	
 	/**
-	 * Update l'entité, appelé par update() de Level
+	 * Update l'entitÃ©, appelÃ© par update() de Level
 	 */
 	public abstract void update();
 	
 	/**
-	 * Rend l'entité, appelé par render() de Level
+	 * Rend l'entitÃ©, appelÃ© par render() de Level
 	 */
 	public abstract void render();
 
@@ -152,7 +152,7 @@ public abstract class Entity{
 	}
 
 	/**
-	 * Getter xa ("Quantité" de déplacement du personnage)
+	 * Getter xa ("QuantitÃ©" de dÃ©placement du personnage)
 	 * @return xa
 	 */
 	public float getXa(){
@@ -160,7 +160,7 @@ public abstract class Entity{
 	}
 
 	/**
-	 * Setter xa ("Quantité" de déplacement du personnage)
+	 * Setter xa ("QuantitÃ©" de dÃ©placement du personnage)
 	 * @param xa
 	 */
 	public void setXa(float xa){
@@ -168,7 +168,7 @@ public abstract class Entity{
 	}
 
 	/**
-	 * Getter ya ("Quantité" de déplacement du personnage)
+	 * Getter ya ("QuantitÃ©" de dÃ©placement du personnage)
 	 * @return ya
 	 */
 	public float getYa(){
@@ -176,7 +176,7 @@ public abstract class Entity{
 	}
 
 	/**
-	 * Setter ya ("Quantité" de déplacement du personnage)
+	 * Setter ya ("QuantitÃ©" de dÃ©placement du personnage)
 	 * @param ya
 	 */
 	public void setYa(float ya){
@@ -184,7 +184,7 @@ public abstract class Entity{
 	}
 
 	/**
-	 * Getter vitesse de déplacement du personnage
+	 * Getter vitesse de dÃ©placement du personnage
 	 * @return speed
 	 */
 	public float getSpeed(){
@@ -192,7 +192,7 @@ public abstract class Entity{
 	}
 
 	/**
-	 * Setter vitesse de déplacement du personnage
+	 * Setter vitesse de dÃ©placement du personnage
 	 * @param speed
 	 */
 	public void setSpeed(float speed){

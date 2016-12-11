@@ -98,7 +98,7 @@ public void pause(){
 }
 
 /**
- * Stop l'animation (Recommencera ensuite au début)
+ * Stop l'animation (Recommencera ensuite au dÃ©but)
  */
 public void stop(){
 	playing = false;
@@ -130,7 +130,7 @@ public int getCurrentColumn(){
 }
 
 /**
- * Retourne true si l'animation est lancé
+ * Retourne true si l'animation est lancÃ©
  * @return boolean
  */
 public boolean isPlaying(){

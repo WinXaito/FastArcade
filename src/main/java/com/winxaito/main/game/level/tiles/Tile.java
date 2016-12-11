@@ -56,7 +56,7 @@ public class Tile{
 	}
 	
 	/**
-	 * Fonction de rendu (Appelé par la fonction render() de Level)
+	 * Fonction de rendu (AppelÃ© par la fonction render() de Level)
 	 */
 	public void render(){		
 		//System.out.println("Bind tile with id: " + texture.id);
@@ -64,7 +64,7 @@ public class Tile{
 	}
 	
 	/**
-	 * Getter de l'id de la Tile (Correspondant à un certain type et une certaine texture)
+	 * Getter de l'id de la Tile (Correspondant Ã  un certain type et une certaine texture)
 	 * @return int
 	 */
 	public int getId(){

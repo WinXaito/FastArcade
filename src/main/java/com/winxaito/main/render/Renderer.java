@@ -28,7 +28,7 @@ public class Renderer{
 	}
 	
 	/**
-	 * Rend un rectangle (Entité ou Tile) - Sans glBegin et glEnd
+	 * Rend un rectangle (EntitÃ© ou Tile) - Sans glBegin et glEnd
 	 * @param x
 	 * @param y
 	 * @param width

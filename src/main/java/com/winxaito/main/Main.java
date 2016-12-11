@@ -76,7 +76,7 @@ public class Main{
 	}
 	
 	/**
-	 * Retourne la résolution (Width) de départ
+	 * Retourne la rÃ©solution (Width) de dÃ©part
 	 * @return startWidth
 	 */
 	public static int getStartWidth(){
@@ -84,7 +84,7 @@ public class Main{
 	}
 	
 	/**
-	 * Retourne la résolution (Height) de départ
+	 * Retourne la rÃ©solution (Height) de dÃ©part
 	 * @return startHeight
 	 */
 	public static int getStartHeight(){
@@ -108,7 +108,7 @@ public class Main{
 	}
 	
 	/**
-	 * Retourne si le jeu doit être lancé en plein écran
+	 * Retourne si le jeu doit Ãªtre lancÃ© en plein Ã©cran
 	 * @return fullScreen
 	 */
 	public static boolean isFullScreen(){
@@ -116,7 +116,7 @@ public class Main{
 	}
 	
 	/**
-	 * Retourne si le jeu doit être lancé en Borderless (Sans bord)
+	 * Retourne si le jeu doit Ãªtre lancÃ© en Borderless (Sans bord)
 	 * @return borderless
 	 */
 	public static boolean isBorderless(){
@@ -124,7 +124,7 @@ public class Main{
 	}
 
 	/**
-	 * Retourne si le jeu doit être en mode VSync
+	 * Retourne si le jeu doit Ãªtre en mode VSync
 	 * @return vSync
 	 */
 	public static boolean isVSync(){
@@ -140,7 +140,7 @@ public class Main{
 	}
 	
 	/**
-	 * Retourne si le jeu doit executé une pause lorsque le rendu n'est pas nécéssaire (Fps limit)
+	 * Retourne si le jeu doit executÃ© une pause lorsque le rendu n'est pas nÃ©cÃ©ssaire (Fps limit)
 	 * @return sleep
 	 */
 	public static boolean isSleep(){
