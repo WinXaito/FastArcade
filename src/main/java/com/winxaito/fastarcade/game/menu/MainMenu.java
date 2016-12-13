@@ -10,6 +10,10 @@ import com.winxaito.fastarcade.game.Game;
 import com.winxaito.fastarcade.game.Game.GameState;
 import com.winxaito.fastarcade.render.Renderer;
 import com.winxaito.fastarcade.render.Texture;
+import org.newdawn.slick.openal.AudioLoader;
+import org.newdawn.slick.util.ResourceLoader;
+
+import java.io.IOException;
 
 public class MainMenu{
 	private int mainButtonWidth = 250;
@@ -24,12 +28,12 @@ public class MainMenu{
 	private Audio music;	
 	
     public MainMenu(Game game){
-    	/*try{
-			//music = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("/res/music/home.ogg"));
-			//music.playAsMusic(1f, 0.8f, true);
+    	try{
+			music = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("music/home.ogg"));
+			music.playAsMusic(1f, 0.8f, true);
 		}catch(IOException e){
 			e.printStackTrace();
-		}*/
+		}
     	
     	buttonPlay = new Button(Display.getWidth() / 2, 50, "Jouer");
     	buttonOptions = new Button(Display.getWidth() / 2, 150, "Options");
@@ -39,6 +43,9 @@ public class MainMenu{
     }
     
     public void update(){
+    	if(!music.isPlaying())
+    		music.playAsMusic(1f, 0.8f, true);
+
     	buttonPlay.setX(Display.getWidth() / 2);
     	buttonPlay.update();
     	buttonOptions.setX(Display.getWidth() / 2);

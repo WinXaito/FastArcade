@@ -83,57 +83,57 @@ public class Animation{
 	}
 
 
-/**
- * Lance l'animation
- */
-public void start(){
-	playing = true;
-}
+	/**
+	 * Lance l'animation
+	 */
+	public void start(){
+		playing = true;
+	}
 
-/**
- * Met en pause l'animation
- */
-public void pause(){
-	playing = false;
-}
+	/**
+	 * Met en pause l'animation
+	 */
+	public void pause(){
+		playing = false;
+	}
 
-/**
- * Stop l'animation (Recommencera ensuite au début)
- */
-public void stop(){
-	playing = false;
-	frame = 0;
-}
+	/**
+	 * Stop l'animation (Recommencera ensuite au début)
+	 */
+	public void stop(){
+		playing = false;
+		frame = 0;
+	}
 
-/**
- * Retourne la frame actuelle
- * @return currentFrame
- */
-public int getCurrentFrame(){
-	return frame;
-}
+	/**
+	 * Retourne la frame actuelle
+	 * @return currentFrame
+	 */
+	public int getCurrentFrame(){
+		return frame;
+	}
 
-/**
- *	Retourne la ligne
- *  @return currentLine
- */
-public int getCurrentLine(){
-	return currentLine;
-}
+	/**
+	 *	Retourne la ligne
+	 *  @return currentLine
+	 */
+	public int getCurrentLine(){
+		return currentLine;
+	}
 
-/**
- * Retourne la colonne
- * @return currentColumn
- */
-public int getCurrentColumn(){
-	return currentColumn;
-}
+	/**
+	 * Retourne la colonne
+	 * @return currentColumn
+	 */
+	public int getCurrentColumn(){
+		return currentColumn;
+	}
 
-/**
- * Retourne true si l'animation est lancé
- * @return boolean
- */
-public boolean isPlaying(){
-	return playing;
-}
+	/**
+	 * Retourne true si l'animation est lancé
+	 * @return boolean
+	 */
+	public boolean isPlaying(){
+		return playing;
+	}
 }

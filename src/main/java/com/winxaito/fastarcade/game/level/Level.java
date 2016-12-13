@@ -3,6 +3,7 @@ package com.winxaito.fastarcade.game.level;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.imageio.ImageIO;
 
@@ -12,7 +13,7 @@ import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.openal.AudioLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
-import com.winxaito.fastarcade.entities.Boost;
+import com.winxaito.fastarcade.entities.items.Boost;
 import com.winxaito.fastarcade.entities.Entity;
 import com.winxaito.fastarcade.entities.Player;
 import com.winxaito.fastarcade.game.Game;
@@ -32,11 +33,11 @@ public class Level{
 	
 	private LoadingMenu loaderMenu;
 	
-	private ArrayList<Tile> tiles = new ArrayList<Tile>();
+	private ArrayList<Tile> tiles = new ArrayList<>();
 	private Tile[][] solidTiles;
 	private Tile[][] transparentTiles;
 	
-	private ArrayList<Entity> entities = new ArrayList<Entity>();
+	private ArrayList<Entity> entities = new ArrayList<>();
 	private Player player;
 	
 	private Audio music;	
@@ -56,13 +57,13 @@ public class Level{
 			e.printStackTrace();
 		}
 		
-		player = new Player(xSpawn * Tile.getSize(), ySpawn * Tile.getSize(), 1 * Tile.getSize(), this);
+		player = new Player(xSpawn * Tile.getSize(), ySpawn * Tile.getSize(), Tile.getSize(), this);
 	}
 	
 	/**
 	 * Chargement d'un level
 	 */
-	public void loadLevel(String name){		
+	public void loadLevel(String name){
 		int[] pixels;
 		BufferedImage image = null;
 		try{
@@ -70,6 +71,7 @@ public class Level{
 			image = ImageIO.read(Level.class.getResource("/levels/level_" + name + "/level_" + name + ".png"));
 		}catch(IOException e){
 			e.printStackTrace();
+			return;
 		}
 		
 		width = image.getWidth();
@@ -107,14 +109,10 @@ public class Level{
 		
 		//Ajout des tiles dans la liste principales
 		for(Tile[] tiles : solidTiles){
-			for(Tile tile : tiles){
-				this.tiles.add(tile);
-			}
+			Collections.addAll(this.tiles, tiles);
 		}
 		for(Tile[] tiles : transparentTiles){
-			for(Tile tile : tiles){
-				this.tiles.add(tile);
-			}
+			Collections.addAll(this.tiles, tiles);
 		}
 		
 		try{
@@ -175,15 +173,10 @@ public class Level{
 		//Rendu des tiles
 		Texture.texTiles.bind();
 		GL11.glBegin(GL11.GL_QUADS);
-			for(Tile tile : tiles){
-				if(tile != null)
-					tile.render();
-			}
+		tiles.stream().filter(tile -> tile != null).forEach(Tile::render);
 		GL11.glEnd();
-		
-		for(Entity entity : entities){
-			entity.render();
-		}
+
+		entities.forEach(Entity::render);
 		
 		//Rendu du joueur
 		player.render();		

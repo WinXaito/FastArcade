@@ -1,7 +1,8 @@
-package com.winxaito.fastarcade.entities;
+package com.winxaito.fastarcade.entities.items;
 
 import java.io.IOException;
 
+import com.winxaito.fastarcade.entities.Entity;
 import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.openal.AudioLoader;
 import org.newdawn.slick.util.ResourceLoader;

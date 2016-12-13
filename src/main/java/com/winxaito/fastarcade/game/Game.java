@@ -105,13 +105,12 @@ public class Game{
 	/**
 	 * Boucle de jeu
 	 */
-	public void mainLoop(){
+	private void mainLoop(){
 		while(running){
 			if(Display.isCloseRequested())
 				exit();
 			
 			Display.update();
-
 			timer();
 		}
 		
@@ -223,7 +222,7 @@ public class Game{
 	 * @param xa
 	 * @param ya
 	 */
-	public void translateView(float xa, float ya){
+	private void translateView(float xa, float ya){
 		xScroll = xa;
 		yScroll = ya;
 		
@@ -238,7 +237,7 @@ public class Game{
 			yScroll = level.getLimits(1);
 	}
 	
-	public void initializeLoadingMenu(){
+	private void initializeLoadingMenu(){
 		loaderMenu = new LoadingMenu(this, "Lancement de FastArcade");
 		loaderMenu.render();
 	}
@@ -246,7 +245,7 @@ public class Game{
 	/**
 	 * Initialisation des paramètres OpenGL (2D)
 	 */
-	public void initializeView(){
+	private void initializeView(){
 		GL11.glViewport(0, 0, width, height);
 		
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
@@ -265,7 +264,7 @@ public class Game{
 	/**
 	 * Initialisation de l'écran (Display)
 	 */
-	public void initializeDisplay(){
+	private void initializeDisplay(){
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		double screenWidth = screenSize.getWidth();
 		double screenHeight = screenSize.getHeight();
@@ -275,10 +274,10 @@ public class Game{
 			
 			if(Main.isFullScreen()){
 				DisplayMode[] modes = Display.getAvailableDisplayModes();
-				
-				for (int i = 0; i < modes.length; i++){
-					if(modes[i].isFullscreenCapable() && modes[i].getWidth() == screenWidth && modes[i].getHeight() == screenHeight)
-						displayMode = modes[i];
+
+				for(DisplayMode mode : modes){
+					if(mode.isFullscreenCapable() && mode.getWidth() == screenWidth && mode.getHeight() == screenHeight)
+						displayMode = mode;
 				}
 				
 				if(displayMode != null){

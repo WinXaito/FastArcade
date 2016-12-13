@@ -22,7 +22,6 @@ public class Main{
 	
 	/**
 	 * Lancement de l'application
-	 * @param args
 	 */
 	public static void main(String args[]){
 		String osNameProperty = osName;
@@ -148,9 +147,6 @@ public class Main{
 	
 	/**
 	 * Check l'OS 
-	 * @param osName
-	 * @param osNamePrefix
-	 * @return
 	 */
 	private static boolean isOSNameMatch(String osName, String osNamePrefix){
 		return osName != null && osName.startsWith(osNamePrefix);
