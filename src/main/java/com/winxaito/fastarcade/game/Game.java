@@ -20,11 +20,8 @@ import com.winxaito.fastarcade.game.menu.MainMenu;
 public class Game{
 	private int width;
 	private int height;
-	private int tps;
-	private int fps;
 	private static int fpsView;
 	private static int tpsView;
-	private int sleep;
 	private boolean running;
 	
 	private GameState gameState = GameState.GameStarting;
@@ -35,6 +32,14 @@ public class Game{
 	private LoadingMenu loaderMenu;
 	private float xScroll;
 	private float yScroll;
+
+	private long tickTimer = 0;
+	private int gameTime = 0;
+	private long time = System.currentTimeMillis();
+	private long lastTickTime = System.nanoTime();
+	private long lastRenderTime = System.nanoTime();
+	private int frames = 0;
+	private int ticks = 0;
 	
 	/**
 	 * Etats de jeu (Menu, level, etc.)
@@ -101,71 +106,13 @@ public class Game{
 	 * Boucle de jeu
 	 */
 	public void mainLoop(){
-		long time = System.currentTimeMillis();
-		long tpsTime = System.nanoTime();
-		long fpsTime = tpsTime;
-		
-		long lastTickTime = System.nanoTime();
-		long lastRenderTime = System.nanoTime();
-		
-		double tickTime = 1_000_000_000.0d / Main.getTpsLimit();
-		double renderTime = 1_000_000_000.0d / Main.getFpsLimit();
-		
-		int ticks = 0;
-		int frames = 0;
-		
-		long timer = System.currentTimeMillis();
-		
 		while(running){
 			if(Display.isCloseRequested())
 				exit();
 			
 			Display.update();
-			
-			if(!Main.isVSync()){
-				//Si on est en dessous des 60 tps
-				if(System.nanoTime() - lastTickTime > tickTime){
-					update();
-					lastTickTime += tickTime;
-					tps++;
-				}
-				//Sinon si on est en dessous des 500 fps
-				else if(System.nanoTime() - lastRenderTime > renderTime){
-					render();
-					lastRenderTime += renderTime;
-					fps++;
-				}
-				//Sinon on endore le Thread
-				else{
-					try {
-						Thread.sleep((int)(1000.0 / Main.getFpsLimit()));
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}else{
-				update();
-				render();
-				fps++;
-				tps++;
-			}
-			
-			//On affiche chaque seconde les ticks et les fps actuel
-			if(System.currentTimeMillis() - timer > 1000){
-				timer += 1000;
-				Display.setTitle(Main.getAppTitle() + " - " + Main.getAppVersion() + "  Fps: " + fps + "/" + Main.getFpsLimit() + 
-						" Tps: " + tps + "/" + Main.getTpsLimit() + " VSync: " + Main.isVSync());
-				
-				if(tps < 50)
-					System.err.println("TPS très faible");
-				if(fps < 40)
-					System.err.println("FPS très faible");
-				
-				fpsView = fps;
-				tpsView = tps;
-				tps = 0;
-				fps = 0;
-			}
+
+			timer();
 		}
 		
 		exit();
@@ -183,7 +130,7 @@ public class Game{
 	/**
 	 * Update du jeu (Correspond au TPS)
 	 */
-	public void update(                  ){
+	public void update(){
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE) && Keyboard.next())
 			setGameState(GameState.MainMenu);
@@ -356,7 +303,56 @@ public class Game{
 			System.exit(1);
 		}
 	}
-	
+
+	/**
+	 * Timer of application
+     */
+	private void timer(){
+		if(!Main.isVSync()){
+			double tickTime = 1_000_000_000.0d / Main.getTpsLimit();
+			double renderTime = 1_000_000_000.0d / Main.getFpsLimit();
+
+			if(System.nanoTime() - lastTickTime > tickTime){
+				ticks++;
+				tickTimer++;
+				gameTime++;
+
+				if(gameTime > Main.getTpsLimit() * 60 * 12)
+					gameTime = 0;
+
+				update();
+				lastTickTime += tickTime;
+			}else if(System.nanoTime() - lastRenderTime > renderTime){
+				frames++;
+				render();
+
+				lastRenderTime += renderTime;
+			}else{
+				try{
+					Thread.sleep((int)(1000.0 / Main.getFpsLimit()));
+				}catch(InterruptedException e){
+					e.printStackTrace();
+				}
+			}
+		}else{
+			update();
+			render();
+			frames++;
+			ticks++;
+		}
+
+		if(System.currentTimeMillis() - time > 1000){
+			time += 1000;
+			System.out.println("INFO: Tps: " + ticks + " Fps: " + frames);
+
+			fpsView = frames;
+			tpsView = ticks;
+
+			ticks = 0;
+			frames = 0;
+		}
+	}
+
 	/**
 	 * Getter gameState
 	 * @return GameState

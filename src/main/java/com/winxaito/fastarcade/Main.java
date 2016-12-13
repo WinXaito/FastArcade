@@ -12,7 +12,7 @@ public class Main{
 	private static int startWidth = 720;
 	private static int startHeight = 480;
 	private static int tpsLimit = 60;
-	private static int fpsLimit = 50;
+	private static int fpsLimit = 60;
 	private static boolean fullScreen = false;
 	private static boolean borderless = false;
 	private static boolean vSync = true;
@@ -152,10 +152,7 @@ public class Main{
 	 * @param osNamePrefix
 	 * @return
 	 */
-	public static boolean isOSNameMatch(String osName, String osNamePrefix) {
-        if (osName == null)
-            return false;
-
-        return osName.startsWith(osNamePrefix);
-    }
+	private static boolean isOSNameMatch(String osName, String osNamePrefix){
+		return osName != null && osName.startsWith(osNamePrefix);
+	}
 }

@@ -135,9 +135,8 @@ public class Level{
 		for(int x = 0; x < width; x++){
 			for(int y = 0; y < height; y++){
 				if(pixels[x + y * width] == 0xFFFFAA00){
-					System.out.println("YEEEEEEEEP");
-					entities.add(new Boost(x * Tile.getSize() + (int)(Tile.getSize() / 6), 
-							y * Tile.getSize() + (int)(Tile.getSize() / 6), (int)(Tile.getSize() / 1.5), this));
+					entities.add(new Boost(x * Tile.getSize() + Tile.getSize() / 6,
+							y * Tile.getSize() + Tile.getSize() / 6, (int)(Tile.getSize() / 1.5), this));
 				}
 			}
 		}
