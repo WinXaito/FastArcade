@@ -50,7 +50,7 @@ public class Level{
 		
 		loadLevel(levelName);
 		try{
-			music = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("/res/music/music.ogg"));
+			music = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("music/music.ogg"));
 			music.playAsMusic(0.8f, 0.8f, true);
 		}catch(IOException e){
 			e.printStackTrace();

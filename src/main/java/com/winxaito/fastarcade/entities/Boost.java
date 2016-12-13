@@ -21,9 +21,9 @@ public class Boost extends Entity{
 	public Boost(int x, int y, int size, Level level){
 		super(x, y, size, level);
 		this.quantity = 100;
-		
+
 		try{
-			audioBoost = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("/res/sounds/boost/boost.ogg"));
+			audioBoost = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("sounds/boost/boost.ogg"));
 		}catch(IOException e){
 			e.printStackTrace();
 		}

@@ -183,10 +183,10 @@ public class Game{
 	/**
 	 * Update du jeu (Correspond au TPS)
 	 */
-	public void update(){
+	public void update(                  ){
 		
-		if(Keyboard.isKeyDown(Keyboard.KEY_0))
-			System.out.println("Key 0");
+		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE) && Keyboard.next())
+			setGameState(GameState.MainMenu);
 		
 		while (Keyboard.next()) {
 		    if (Keyboard.getEventKeyState()) {
