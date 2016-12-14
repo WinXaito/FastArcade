@@ -1,5 +1,6 @@
 package com.winxaito.fastarcade.game.menu;
 
+import com.winxaito.fastarcade.game.GameState;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.Color;
@@ -7,7 +8,6 @@ import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.openal.Audio;
 
 import com.winxaito.fastarcade.game.Game;
-import com.winxaito.fastarcade.game.Game.GameState;
 import com.winxaito.fastarcade.render.Renderer;
 import com.winxaito.fastarcade.render.Texture;
 import org.newdawn.slick.openal.AudioLoader;
@@ -56,9 +56,9 @@ public class MainMenu{
     	while(Mouse.next()){
     		if (Mouse.getEventButtonState()) {
 		    	if(buttonPlay.isClick()){
-		    		game.setGameState(GameState.LevelMenu);
+					GameState.setGameState(GameState.GameStateList.MENU_LEVEL);
 		    	}else if(buttonOptions.isClick()){
-		    		game.setGameState(GameState.OptionsMenu);
+					GameState.setGameState(GameState.GameStateList.MENU_OPTIONS);
 		    	}else if(buttonExit.isClick()){
 		    		game.exit();
 		    	}

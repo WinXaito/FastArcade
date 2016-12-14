@@ -24,7 +24,6 @@ public class Game{
 	private static int tpsView;
 	private boolean running;
 	
-	private GameState gameState = GameState.GameStarting;
 	private Level level;
 	private Hud hud;
 	private MainMenu menu;
@@ -42,32 +41,12 @@ public class Game{
 	private int ticks = 0;
 	
 	/**
-	 * Etats de jeu (Menu, level, etc.)
-	 */
-	public enum GameState{
-		MainMenu,
-		LevelMenu(MainMenu),
-		OptionsMenu(MainMenu),
-		Level(LevelMenu),
-		GameStarting;
-		
-		protected GameState escapteGoTo;
-		
-		GameState(){
-			this.escapteGoTo = null;
-		}
-		
-		GameState(GameState escapteGoTo){
-			this.escapteGoTo = escapteGoTo;
-		}
-	}
-	
-	/**
 	 * Constructeur de la classe Game
 	 * @param width
 	 * @param height
 	 */
 	public Game(int width, int height){
+		GameState.setGameState(GameState.GameStateList.STARTING);
 		this.width = width;
 		this.height = height;
 		
@@ -130,45 +109,47 @@ public class Game{
 	 * Update du jeu (Correspond au TPS)
 	 */
 	public void update(){
-		
 		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE) && Keyboard.next())
-			setGameState(GameState.MainMenu);
-		
+			GameState.setGameState(GameState.GameStateList.MENU_MAIN);
+
 		while (Keyboard.next()) {
 		    if (Keyboard.getEventKeyState()) {
 		        if (Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
-		        	if(gameState.escapteGoTo != null){
-		        		if(gameState == GameState.Level)
-		        			level.unloadLevel();
-		        		
-		        		setGameState(gameState.escapteGoTo);
+		        	//TODO: GameState escapteGoTo ?
+					/*if(gameState.escapteGoTo != null){
+						if(GameState.getGameState() == GameState.GameStateList.LEVEL_GAME)
+							//if(gameState == GameState.Level)
+							level.unloadLevel();
+
+						//setGameState(gameState.escapteGoTo);
+						GameState.setGameState(GameState.GameStateList.NONE);
 		        	}else{
 		        		exit();
-		        	}
+		        	}*/
 		        }
 		    }
 		}
-		
-		switch(gameState){
-			case MainMenu:					
+
+		switch(GameState.getGameState()){
+			case MENU_MAIN:
 				menu.update();
 				break;
-			case LevelMenu:
+			case MENU_LEVEL:
 				levelMenu.update();
 				break;
-			case Level:
+			case LEVEL_GAME:
 				level.update();
 				hud.update();
 				float xa = -level.getPlayer().getX() + width / 2 - level.getPlayer().getSize() / 2;
 				float ya = -level.getPlayer().getY() + height / 2 - level.getPlayer().getSize() / 2;
 				translateView(xa, ya);
 				break;
-			case GameStarting:
-				
-				break;
-			case OptionsMenu:
-				//Update Options-menu
-				break;
+			default:
+				try{
+					throw new Exception("Update error");
+				}catch(Exception e){
+					e.printStackTrace();
+				}
 		}
 	}
 	
@@ -181,26 +162,29 @@ public class Game{
 		this.width = Display.getWidth();
 		this.height = Display.getHeight();
 		initializeView();
-		
-		switch(gameState){
-			case MainMenu:
+
+		switch(GameState.getGameState()){
+			case MENU_MAIN:
 				menu.render();
 				break;
-			case LevelMenu:
+			case MENU_LEVEL:
 				levelMenu.render();
 				break;
-			case Level:					
+			case LEVEL_GAME:
 				GL11.glTranslatef(xScroll, yScroll, 0);
 				level.render();
 				GL11.glTranslatef(-xScroll, -yScroll, 0);
 				hud.render();
 				break;
-			case GameStarting:
+			case STARTING:
 				loaderMenu.render();
 				break;
-			case OptionsMenu:
-				//Render options-menu
-				break;
+			default:
+				try{
+					throw new Exception("Render error");
+				}catch(Exception e){
+					e.printStackTrace();
+				}
 		}
 	}
 	
@@ -208,7 +192,7 @@ public class Game{
 		level = new Level(this, levelName);
 		hud = new Hud(level);
 		
-		setGameState(GameState.Level);
+		GameState.setGameState(GameState.GameStateList.LEVEL_GAME);
 		
 		try{
 			Thread.sleep(3);
@@ -216,12 +200,12 @@ public class Game{
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
-	 * Déplacement du level
-	 * @param xa
-	 * @param ya
-	 */
+	 * Déplacement de la vue
+	 * @param xa float
+	 * @param ya float
+     */
 	private void translateView(float xa, float ya){
 		xScroll = xa;
 		yScroll = ya;
@@ -353,24 +337,17 @@ public class Game{
 	}
 
 	/**
-	 * Getter gameState
-	 * @return GameState
-	 */
-	public GameState getGameState(){
-		return gameState;
-	}
-	
-	/**
-	 * Setter gameState
-	 * @param gameState
-	 */
-	public void setGameState(GameState gameState){
-		this.gameState = gameState;
-	}
-	
+	 * Return static int (Used for view in HUD), FPS setted in timer method every second
+	 * @return int
+     */
 	public static int getFps(){
 		return Game.fpsView;
 	}
+
+	/**
+	 * Return static int (Used for view in HUD), TPS setted in timer method every second
+	 * @return int
+	 */
 	public static int getTps(){
 		return Game.tpsView;
 	}
