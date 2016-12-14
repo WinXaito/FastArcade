@@ -36,4 +36,8 @@ public class GameState{
         logger.debug("[GAMESTATE] Changing from " + GameState.gameState + " to " + gameState);
         GameState.gameState = gameState;
     }
+
+    public static boolean isGameState(GameStateList gameState){
+        return GameState.gameState == gameState;
+    }
 }

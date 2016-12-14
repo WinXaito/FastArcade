@@ -9,6 +9,7 @@ import com.winxaito.fastarcade.render.Texture;
 
 public class LoadingMenu extends Menu{
 	private String text;
+	private boolean rendered = false;
 	
 	public LoadingMenu(Game game, String text){
 		super(game);
@@ -24,5 +25,16 @@ public class LoadingMenu extends Menu{
 		Texture.texMenuBackground.bind();
 		Renderer.renderQuad(0, 0, Display.getWidth(), Display.getHeight(), Color.white, 0, 0, 16);
 		drawStringCenter(Display.getWidth() / 2, Display.getHeight() / 2, text);
+
+		rendered = true;
+	}
+
+	public boolean getIfRendered(){
+		if(rendered){
+			rendered = false;
+			return true;
+		}
+
+		return false;
 	}
 }

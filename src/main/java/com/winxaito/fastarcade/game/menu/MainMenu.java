@@ -28,20 +28,23 @@ public class MainMenu{
 	private Audio music;	
 	
     public MainMenu(Game game){
-    	try{
+    	this.game = game;
+    }
+
+    public void load(){
+    	//Load buttons
+		buttonPlay = new Button(Display.getWidth() / 2, 50, "Jouer");
+		buttonOptions = new Button(Display.getWidth() / 2, 150, "Options");
+		buttonExit = new Button(Display.getWidth() / 2, 250, "Quitter");
+
+		//Load home music
+		try{
 			music = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("music/home.ogg"));
-			music.playAsMusic(1f, 0.8f, true);
 		}catch(IOException e){
 			e.printStackTrace();
 		}
-    	
-    	buttonPlay = new Button(Display.getWidth() / 2, 50, "Jouer");
-    	buttonOptions = new Button(Display.getWidth() / 2, 150, "Options");
-    	buttonExit = new Button(Display.getWidth() / 2, 250, "Quitter");
-    	
-    	this.game = game;
-    }
-    
+	}
+
     public void update(){
     	if(!music.isPlaying())
     		music.playAsMusic(1f, 0.8f, true);

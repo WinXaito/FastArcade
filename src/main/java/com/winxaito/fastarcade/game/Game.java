@@ -50,20 +50,20 @@ public class Game{
 		this.width = width;
 		this.height = height;
 		
-		//initialisation de la fenêtre
+		//Initializing the window
 		initializeDisplay();
 		
-		//Initialisation de la vue
+		//Initialize the view
 		initializeView();
-		
-		//Initialisation du Menu Loading (Chargement du démarrage)
-		initializeLoadingMenu();
 		
 		//Création du menu
 		menu = new MainMenu(this);
 		
 		//Création LevelMenu
 		levelMenu = new LevelMenu(this);
+
+		//Initialisation du Menu Loading (Chargement du démarrage)
+		initializeLoadingMenu();
 	}
 	
 	/**
@@ -88,9 +88,9 @@ public class Game{
 		while(running){
 			if(Display.isCloseRequested())
 				exit();
-			
-			Display.update();
+
 			timer();
+			Display.update();
 		}
 		
 		exit();
@@ -104,31 +104,21 @@ public class Game{
 		Display.destroy();
 		System.exit(0);
 	}
+
+	/**
+	 * Game loading (With starting menu)
+     */
+	private void load(){
+		menu.load();
+
+		GameState.setGameState(GameState.GameStateList.MENU_MAIN);
+	}
 	
 	/**
 	 * Update du jeu (Correspond au TPS)
 	 */
 	public void update(){
-		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE) && Keyboard.next())
-			GameState.setGameState(GameState.GameStateList.MENU_MAIN);
-
-		while (Keyboard.next()) {
-		    if (Keyboard.getEventKeyState()) {
-		        if (Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
-		        	//TODO: GameState escapteGoTo ?
-					/*if(gameState.escapteGoTo != null){
-						if(GameState.getGameState() == GameState.GameStateList.LEVEL_GAME)
-							//if(gameState == GameState.Level)
-							level.unloadLevel();
-
-						//setGameState(gameState.escapteGoTo);
-						GameState.setGameState(GameState.GameStateList.NONE);
-		        	}else{
-		        		exit();
-		        	}*/
-		        }
-		    }
-		}
+		input();
 
 		switch(GameState.getGameState()){
 			case MENU_MAIN:
@@ -144,12 +134,41 @@ public class Game{
 				float ya = -level.getPlayer().getY() + height / 2 - level.getPlayer().getSize() / 2;
 				translateView(xa, ya);
 				break;
-			default:
-				try{
-					throw new Exception("Update error");
-				}catch(Exception e){
-					e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Manage game inputs
+     */
+	private void input(){
+		while (Keyboard.next()) {
+			if (Keyboard.getEventKeyState()){
+				if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && !Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
+					switch(GameState.getGameState()){
+						case MENU_LEVEL:
+						case MENU_OPTIONS:
+							GameState.setGameState(GameState.GameStateList.MENU_MAIN);
+							break;
+						case LEVEL_GAME:
+							GameState.setGameState(GameState.GameStateList.LEVEL_OPTIONS);
+							break;
+						case LEVEL_OPTIONS:
+							GameState.setGameState(GameState.GameStateList.LEVEL_GAME);
+							break;
+					}
 				}
+
+				//TODO: Améliorer le starting
+				if(Keyboard.isKeyDown(Keyboard.KEY_SPACE) && GameState.isGameState(GameState.GameStateList.STARTING))
+					GameState.setGameState(GameState.GameStateList.MENU_MAIN);
+
+				//TODO: Modifier l'action pour quitter la partie (Via le menu)
+				if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) &&
+						GameState.isGameState(GameState.GameStateList.LEVEL_GAME)){
+					level.unloadLevel();
+					GameState.setGameState(GameState.GameStateList.MENU_MAIN);
+				}
+			}
 		}
 	}
 	
@@ -179,12 +198,6 @@ public class Game{
 			case STARTING:
 				loaderMenu.render();
 				break;
-			default:
-				try{
-					throw new Exception("Render error");
-				}catch(Exception e){
-					e.printStackTrace();
-				}
 		}
 	}
 	
@@ -220,10 +233,13 @@ public class Game{
 		if(yScroll > level.getLimits(1))
 			yScroll = level.getLimits(1);
 	}
-	
+
 	private void initializeLoadingMenu(){
 		loaderMenu = new LoadingMenu(this, "Lancement de FastArcade");
-		loaderMenu.render();
+		render();
+		Display.update();
+
+		load();
 	}
 	
 	/**
