@@ -8,7 +8,7 @@ public class Tile{
 	private static int size = 64;
 	private int x;
 	private int y;
-	
+
 	private Tiles tile;
 	private float textureSlot = 16.0f;
 	
@@ -24,11 +24,11 @@ public class Tile{
 	 * Type de tiles (Avec offset de la texture et type)
 	 */
 	public enum Tiles{
+		BACKGROUND(0, TileType.TRANSPARENT, 16, 1),
 		DIRT(1, TileType.SOLID, 0, 0),
 		GRASS(2, TileType.SOLID, 1, 0),
 		STONE(3, TileType.SOLID, 3, 0),
-		CLOUD(4, TileType.TRANSPARENT, 3, 0),
-		BACKGROUND(5, TileType.TRANSPARENT, 5, 1);
+		CLOUD(4, TileType.TRANSPARENT, 3, 0);
 		
 		protected int id;
 		protected TileType tileType;
@@ -45,9 +45,9 @@ public class Tile{
 	
 	/**
 	 * Constructeur
-	 * @param x
-	 * @param y
-	 * @param tile
+	 * @param x int
+	 * @param y int
+	 * @param tile Tiles
 	 */
 	public Tile(int x, int y, Tiles tile){
 		this.x = x * size;
@@ -58,9 +58,9 @@ public class Tile{
 	/**
 	 * Fonction de rendu (Appelé par la fonction render() de Level)
 	 */
-	public void render(){		
-		//System.out.println("Bind tile with id: " + texture.id);
-		Renderer.renderQuad(x, y, size, size, Color.white, tile.xOffset, tile.yOffset, textureSlot);
+	public void render(){
+		if(tile.id != 0)
+			Renderer.renderQuad(x, y, size, size, Color.white, tile.xOffset, tile.yOffset, textureSlot);
 	}
 	
 	/**
@@ -89,7 +89,7 @@ public class Tile{
 
 	/**
 	 * Setter taille Tile
-	 * @param size
+	 * @param size int
 	 */
 	public static void setSize(int size){
 		Tile.size = size;

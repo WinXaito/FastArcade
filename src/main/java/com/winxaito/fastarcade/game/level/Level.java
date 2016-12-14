@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.openal.AudioLoader;
 import org.newdawn.slick.util.ResourceLoader;
@@ -32,7 +33,8 @@ public class Level{
 	private float gravity = 4.4f;
 	
 	private LoadingMenu loaderMenu;
-	
+
+	private Background background;
 	private ArrayList<Tile> tiles = new ArrayList<>();
 	private Tile[][] solidTiles;
 	private Tile[][] transparentTiles;
@@ -48,8 +50,12 @@ public class Level{
 	public Level(Game game, String levelName){
 		//Création du LoaderMenu
 		loaderMenu = new LoadingMenu(game, "Chargement du level: " + levelName);
-		
+
+		//Initialisation du background
+		background = new Background();
+
 		loadLevel(levelName);
+
 		try{
 			music = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("music/music.ogg"));
 			music.playAsMusic(0.8f, 0.8f, true);
@@ -151,8 +157,8 @@ public class Level{
 		//Limite droite et bas du level
 		limits[2] = -width * Tile.getSize() + Display.getWidth();
 		limits[3] = -height * Tile.getSize() + Display.getHeight();
-		
-		ArrayList<Entity> removedEntity = new ArrayList<Entity>();
+
+		ArrayList<Entity> removedEntity = new ArrayList<>();
 		for(Entity entity : entities){
 			if(entity.isRemoved())
 				removedEntity.add(entity);
@@ -164,17 +170,19 @@ public class Level{
 		}
 		
 		player.update();
+		background.update(new Vector2f(player.getX(), player.getY()));
 	}
 	
 	/**
 	 * Rendu du level (Appeler par la fonction render de la classe Game)
 	 */
 	public void render(){
+		//Rendu du background
+		background.render();
+
 		//Rendu des tiles
 		Texture.texTiles.bind();
-		GL11.glBegin(GL11.GL_QUADS);
 		tiles.stream().filter(tile -> tile != null).forEach(Tile::render);
-		GL11.glEnd();
 
 		entities.forEach(Entity::render);
 		

@@ -38,16 +38,18 @@ public class MainMenu{
 		buttonExit = new Button(Display.getWidth() / 2, 250, "Quitter");
 
 		//Load home music
+		/* TODO: Active music
 		try{
 			music = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("music/home.ogg"));
 		}catch(IOException e){
 			e.printStackTrace();
-		}
+		}*/
 	}
 
     public void update(){
-    	if(!music.isPlaying())
-    		music.playAsMusic(1f, 0.8f, true);
+    	//TODO: Active mudic
+    	/*if(!music.isPlaying())
+    		music.playAsMusic(1f, 0.8f, true);*/
 
     	buttonPlay.setX(Display.getWidth() / 2);
     	buttonPlay.update();

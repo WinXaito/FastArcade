@@ -18,6 +18,8 @@ import com.winxaito.fastarcade.game.menu.LoadingMenu;
 import com.winxaito.fastarcade.game.menu.MainMenu;
 
 public class Game{
+	private int scaleWidth = 1920;
+	private int scaleHeight = 1080;
 	private int width;
 	private int height;
 	private static int fpsView;
@@ -206,12 +208,6 @@ public class Game{
 		hud = new Hud(level);
 		
 		GameState.setGameState(GameState.GameStateList.LEVEL_GAME);
-		
-		try{
-			Thread.sleep(3);
-		}catch(InterruptedException e){
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -247,9 +243,12 @@ public class Game{
 	 */
 	private void initializeView(){
 		GL11.glViewport(0, 0, width, height);
+		//GL11.glViewport(0, 0, scaleWidth, scaleHeight);
 		
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
+		//GLU.gluOrtho2D(0, width, height, 0);
+		//GLU.gluOrtho2D(0, scaleWidth, scaleHeight, 0);
 		GLU.gluOrtho2D(0, width, height, 0);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glLoadIdentity();
