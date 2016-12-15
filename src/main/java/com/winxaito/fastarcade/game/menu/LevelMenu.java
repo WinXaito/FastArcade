@@ -1,12 +1,11 @@
 package com.winxaito.fastarcade.game.menu;
 
+import com.winxaito.fastarcade.game.menu.components.Button;
 import org.lwjgl.opengl.Display;
 
 import com.winxaito.fastarcade.game.Game;
 
-public class LevelMenu{	
-	private Game game;
-	
+public class LevelMenu extends Menu{
 	public enum LevelList{
 		Level1("1", 0, 1, new Button(Display.getWidth() / 2, 50, "Jouer 1"), new Button(Display.getWidth() / 2, 150, "Supprimer")),
 		LevelFirst("first", 1, 2, new Button(Display.getWidth() / 2, 300, "Jouer First"), new Button(Display.getWidth() / 2, 400, "Supprimer"));
@@ -27,9 +26,14 @@ public class LevelMenu{
 	}
 	
 	public LevelMenu(Game game){
-		this.game = game;
+		super(game);
 	}
-	
+
+	@Override
+	public void load(){
+
+	}
+
 	public void update(){
 		for(LevelList level : LevelList.values()){
 			level.buttonPlay.update();

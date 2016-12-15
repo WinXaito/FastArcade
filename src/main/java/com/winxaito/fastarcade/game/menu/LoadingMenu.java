@@ -17,6 +17,10 @@ public class LoadingMenu extends Menu{
 	}
 
 	@Override
+	public void load(){
+	}
+
+	@Override
 	public void update(){
 	}
 

@@ -38,7 +38,8 @@ public abstract class Menu{
 		Font awtFont = new Font(fontName, Font.BOLD, 24);
     	font = new TrueTypeFont(awtFont, true);
 	}
-	
+
+	public abstract void load();
 	public abstract void update();
 	public abstract void render();
 	

@@ -1,4 +1,4 @@
-package com.winxaito.fastarcade.game.menu;
+package com.winxaito.fastarcade.game.menu.components;
 
 import java.awt.Font;
 

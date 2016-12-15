@@ -1,6 +1,7 @@
 package com.winxaito.fastarcade.game.menu;
 
 import com.winxaito.fastarcade.game.GameState;
+import com.winxaito.fastarcade.game.menu.components.Button;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.Color;
@@ -10,12 +11,8 @@ import org.newdawn.slick.openal.Audio;
 import com.winxaito.fastarcade.game.Game;
 import com.winxaito.fastarcade.render.Renderer;
 import com.winxaito.fastarcade.render.Texture;
-import org.newdawn.slick.openal.AudioLoader;
-import org.newdawn.slick.util.ResourceLoader;
 
-import java.io.IOException;
-
-public class MainMenu{
+public class MainMenu extends Menu{
 	private int mainButtonWidth = 250;
 	private int mainButtonHeight = 50;
 	
@@ -23,12 +20,11 @@ public class MainMenu{
 	private Button buttonOptions;
 	private Button buttonExit;
 	
-	private Game game;
 	private TrueTypeFont font;
 	private Audio music;	
 	
     public MainMenu(Game game){
-    	this.game = game;
+    	super(game);
     }
 
     public void load(){
@@ -61,9 +57,11 @@ public class MainMenu{
     	while(Mouse.next()){
     		if (Mouse.getEventButtonState()) {
 		    	if(buttonPlay.isClick()){
-					GameState.setGameState(GameState.GameStateList.MENU_LEVEL);
+					//TODO: Remove -> GameState.setState(GameState.GameStateList.MENU_LEVEL);
+					MenuState.setState(MenuState.MenuStateList.LEVEL);
 		    	}else if(buttonOptions.isClick()){
-					GameState.setGameState(GameState.GameStateList.MENU_OPTIONS);
+					//GameState.setState(GameState.GameStateList.MENU_OPTIONS);
+					MenuState.setState(MenuState.MenuStateList.OPTIONS);
 		    	}else if(buttonExit.isClick()){
 		    		game.exit();
 		    	}

@@ -3,6 +3,7 @@ package com.winxaito.fastarcade.game;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
+import com.winxaito.fastarcade.game.menu.*;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
@@ -12,10 +13,6 @@ import org.lwjgl.util.glu.GLU;
 
 import com.winxaito.fastarcade.Main;
 import com.winxaito.fastarcade.game.level.Level;
-import com.winxaito.fastarcade.game.menu.Hud;
-import com.winxaito.fastarcade.game.menu.LevelMenu;
-import com.winxaito.fastarcade.game.menu.LoadingMenu;
-import com.winxaito.fastarcade.game.menu.MainMenu;
 
 public class Game{
 	private int scaleWidth = 1920;
@@ -28,9 +25,8 @@ public class Game{
 	
 	private Level level;
 	private Hud hud;
-	private MainMenu menu;
-	private LevelMenu levelMenu;
-	private LoadingMenu loaderMenu;
+	private LoadingMenu loadingMenu;
+	private Menus menus;
 	private float xScroll;
 	private float yScroll;
 
@@ -48,7 +44,7 @@ public class Game{
 	 * @param height
 	 */
 	public Game(int width, int height){
-		GameState.setGameState(GameState.GameStateList.STARTING);
+		GameState.setState(GameState.GameStateList.STARTING);
 		this.width = width;
 		this.height = height;
 		
@@ -57,15 +53,17 @@ public class Game{
 		
 		//Initialize the view
 		initializeView();
-		
-		//Création du menu
-		menu = new MainMenu(this);
-		
-		//Création LevelMenu
-		levelMenu = new LevelMenu(this);
 
 		//Initialisation du Menu Loading (Chargement du démarrage)
+		loadingMenu = new LoadingMenu(this, "Lancement de FastArcade");
 		initializeLoadingMenu();
+
+		//Création du menu
+		//menu = new MainMenu(this);
+		menus = new Menus(this, loadingMenu);
+		
+		//Chargement des menus
+		loadMenus();
 	}
 	
 	/**
@@ -108,12 +106,11 @@ public class Game{
 	}
 
 	/**
-	 * Game loading (With starting menu)
+	 * Menu loading (With starting menu)
      */
-	private void load(){
-		menu.load();
-
-		GameState.setGameState(GameState.GameStateList.MENU_MAIN);
+	private void loadMenus(){
+		menus.load();
+		GameState.setState(GameState.GameStateList.MENU);
 	}
 	
 	/**
@@ -122,12 +119,9 @@ public class Game{
 	public void update(){
 		input();
 
-		switch(GameState.getGameState()){
-			case MENU_MAIN:
-				menu.update();
-				break;
-			case MENU_LEVEL:
-				levelMenu.update();
+		switch(GameState.getState()){
+			case MENU:
+				menus.update();
 				break;
 			case LEVEL_GAME:
 				level.update();
@@ -146,29 +140,21 @@ public class Game{
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()){
 				if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && !Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
-					switch(GameState.getGameState()){
-						case MENU_LEVEL:
-						case MENU_OPTIONS:
-							GameState.setGameState(GameState.GameStateList.MENU_MAIN);
-							break;
+					switch(GameState.getState()){
 						case LEVEL_GAME:
-							GameState.setGameState(GameState.GameStateList.LEVEL_OPTIONS);
+							GameState.setState(GameState.GameStateList.LEVEL_OPTIONS);
 							break;
 						case LEVEL_OPTIONS:
-							GameState.setGameState(GameState.GameStateList.LEVEL_GAME);
+							GameState.setState(GameState.GameStateList.LEVEL_GAME);
 							break;
 					}
 				}
 
-				//TODO: Améliorer le starting
-				if(Keyboard.isKeyDown(Keyboard.KEY_SPACE) && GameState.isGameState(GameState.GameStateList.STARTING))
-					GameState.setGameState(GameState.GameStateList.MENU_MAIN);
-
 				//TODO: Modifier l'action pour quitter la partie (Via le menu)
 				if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) &&
-						GameState.isGameState(GameState.GameStateList.LEVEL_GAME)){
+						GameState.isState(GameState.GameStateList.LEVEL_GAME)){
 					level.unloadLevel();
-					GameState.setGameState(GameState.GameStateList.MENU_MAIN);
+					GameState.setState(GameState.GameStateList.MENU);
 				}
 			}
 		}
@@ -184,12 +170,9 @@ public class Game{
 		this.height = Display.getHeight();
 		initializeView();
 
-		switch(GameState.getGameState()){
-			case MENU_MAIN:
-				menu.render();
-				break;
-			case MENU_LEVEL:
-				levelMenu.render();
+		switch(GameState.getState()){
+			case MENU:
+				menus.render();
 				break;
 			case LEVEL_GAME:
 				GL11.glTranslatef(xScroll, yScroll, 0);
@@ -198,7 +181,7 @@ public class Game{
 				hud.render();
 				break;
 			case STARTING:
-				loaderMenu.render();
+				loadingMenu.render();
 				break;
 		}
 	}
@@ -207,7 +190,7 @@ public class Game{
 		level = new Level(this, levelName);
 		hud = new Hud(level);
 		
-		GameState.setGameState(GameState.GameStateList.LEVEL_GAME);
+		GameState.setState(GameState.GameStateList.LEVEL_GAME);
 	}
 
 	/**
@@ -231,11 +214,8 @@ public class Game{
 	}
 
 	private void initializeLoadingMenu(){
-		loaderMenu = new LoadingMenu(this, "Lancement de FastArcade");
 		render();
 		Display.update();
-
-		load();
 	}
 	
 	/**

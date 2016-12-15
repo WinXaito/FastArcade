@@ -14,9 +14,7 @@ public class GameState{
         STARTING,
         GAMELOADER,
 
-        MENU_MAIN,
-        MENU_LEVEL,
-        MENU_OPTIONS,
+        MENU,
 
         GAME,
         GAME_OPTIONS,
@@ -28,16 +26,16 @@ public class GameState{
         NONE,
     }
 
-    public static GameStateList getGameState(){
+    public static GameStateList getState(){
         return gameState;
     }
 
-    public static void setGameState(GameStateList gameState){
+    public static void setState(GameStateList gameState){
         logger.debug("[GAMESTATE] Changing from " + GameState.gameState + " to " + gameState);
         GameState.gameState = gameState;
     }
 
-    public static boolean isGameState(GameStateList gameState){
+    public static boolean isState(GameStateList gameState){
         return GameState.gameState == gameState;
     }
 }
