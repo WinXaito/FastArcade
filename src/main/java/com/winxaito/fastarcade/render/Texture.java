@@ -54,7 +54,7 @@ public class Texture{
 	}
 	
 	/**
-	 * Loader de background
+	 * Loader de texture
 	 * @param name String
 	 * @param extension String
 	 * @return Texture
@@ -62,7 +62,7 @@ public class Texture{
 	public static Texture loadTexture(String name, String extension){
 		BufferedImage image = null;
 		try{
-			//Chargement de la background
+			//Chargement de la texture
 			image = ImageIO.read(Texture.class.getResource("/textures/" + name + "." + extension));
 			logger.debug("Load texture: /textures/" + name + "." + extension);
 		}catch(IOException e){
@@ -91,7 +91,7 @@ public class Texture{
 		
 		buffer.flip();
 		
-		//Génération de la background OpenGL
+		//Génération de la texture OpenGL
 		int id = glGenTextures();
 		glBindTexture(GL_TEXTURE_2D, id);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -102,26 +102,26 @@ public class Texture{
 		
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 		
-		//Retourne une nouvelle background
+		//Retourne une nouvelle texture
 		return new Texture(width, height, id);
 	}
 	
 	/**
-	 * Permet d'appliquer la background
+	 * Permet d'appliquer la texutre
 	 */
 	public void bind(){
 		glBindTexture(GL_TEXTURE_2D, id);
 	}
 	
 	/**
-	 * Enlève la background
+	 * Enlève la texture
 	 */
 	public void unbind(){
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	
 	/**
-	 * Getter largeur background
+	 * Getter largeur texture
 	 * @return int
 	 */
 	public int getWidth(){
@@ -129,7 +129,7 @@ public class Texture{
 	}
 	
 	/**
-	 * Getter hauteur background
+	 * Getter hauteur texture
 	 * @return int
 	 */
 	public int getHeight(){

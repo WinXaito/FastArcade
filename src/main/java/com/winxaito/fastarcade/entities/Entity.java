@@ -22,9 +22,9 @@ public abstract class Entity{
 	
 	/**
 	 * Constructeur
-	 * @param x
-	 * @param y
-	 * @param size
+	 * @param x int
+	 * @param y int
+	 * @param size size
 	 */
 	public Entity(int x, int y, int size, Level level){
 		this.x = x;
@@ -43,32 +43,26 @@ public abstract class Entity{
 	 */
 	public abstract void render();
 
-	
+	/**
+	 * Indique si la tile indiqué est solid ou non
+	 * @param xa float
+	 * @param ya float
+     * @return boolean
+     */
 	public boolean isSolidTile(float xa, float ya){
 		int x0 = (int)(x + xa) / size;
 		int x1 = (int)(x + xa + size) / size;
 		int y0 = (int)(y + ya) / size;
 		int y1 = (int)(y + ya + size) / size;
-		
-		if(level.getSolidTile(x0, y0) != null)
-			return true;
-		if(level.getSolidTile(x1, y0) != null)
-			return true;
-		if(level.getSolidTile(x1, y1) != null)
-			return true;
-		if(level.getSolidTile(x0, y1) != null)
-			return true;
-		
-		return false;
+
+		return (level.getSolidTile(x0, y0) != null)
+				|| (level.getSolidTile(x1, y0) != null)
+				|| (level.getSolidTile(x1, y1) != null)
+				|| (level.getSolidTile(x0, y1) != null);
 	}
 	
 	public boolean isGrounded() {
-		if (level.getSolidTile((int) (x + size / 2) / size, (int) (y + size + 0.1) / size) != null){
-			//System.out.println("GROUNDED");
-			return true;
-		}
-		//System.out.println("NOT GROUNDED - " + (int) (x + 5) / size + " - " + (int) (y + 14.1) / size);
-		return false;
+		return level.getSolidTile((int)(x + size / 2) / size, (int)(y + size + 0.1) / size) != null;
 	}
 	
 	/**
@@ -81,7 +75,7 @@ public abstract class Entity{
 
 	/**
 	 * Setter position X
-	 * @param x
+	 * @param x float
 	 */
 	public void setX(float x){
 		this.x = x;
@@ -97,7 +91,7 @@ public abstract class Entity{
 
 	/**
 	 * Setter position Y
-	 * @param y
+	 * @param y float
 	 */
 	public void setY(float y){
 		this.y = y;
@@ -113,14 +107,14 @@ public abstract class Entity{
 
 	/**
 	 * Setter size
-	 * @param size
+	 * @param size int
 	 */
 	public void setSize(int size){
 		this.size = size;
 	}
 
 	/**
-	 * Getter xo (Offset en X de la background -> SpriteSheet)
+	 * Getter xo (Offset en X de la texture -> SpriteSheet)
 	 * @return xo
 	 */
 	public int getXo(){
@@ -128,15 +122,15 @@ public abstract class Entity{
 	}
 
 	/**
-	 * Setter xo (Offset en X de la background -> SpriteSheet)
-	 * @param xo 
+	 * Setter xo (Offset en X de la texture -> SpriteSheet)
+	 * @param xo int
 	 */
 	public void setXo(int xo){
 		this.xo = xo;
 	}
 
 	/**
-	 * Getter yo (Offset en Y de la background -> SpriteSheet)
+	 * Getter yo (Offset en Y de la texture -> SpriteSheet)
 	 * @return yo
 	 */
 	public int getYo(){
@@ -144,8 +138,8 @@ public abstract class Entity{
 	}
 
 	/**
-	 * Getter yo (Offset en Y de la background -> SpriteSheet)
-	 * @param yo
+	 * Getter yo (Offset en Y de la texture -> SpriteSheet)
+	 * @param yo int
 	 */
 	public void setYo(int yo){
 		this.yo = yo;
@@ -161,7 +155,7 @@ public abstract class Entity{
 
 	/**
 	 * Setter xa ("Quantité" de déplacement du personnage)
-	 * @param xa
+	 * @param xa float
 	 */
 	public void setXa(float xa){
 		this.xa = xa;
@@ -177,7 +171,7 @@ public abstract class Entity{
 
 	/**
 	 * Setter ya ("Quantité" de déplacement du personnage)
-	 * @param ya
+	 * @param ya float
 	 */
 	public void setYa(float ya){
 		this.ya = ya;
@@ -193,7 +187,7 @@ public abstract class Entity{
 
 	/**
 	 * Setter vitesse de déplacement du personnage
-	 * @param speed
+	 * @param speed float
 	 */
 	public void setSpeed(float speed){
 		this.speed = speed;
@@ -208,7 +202,7 @@ public abstract class Entity{
 	}
 
 	/**
-	 * @param removed
+	 * @param removed boolean
 	 */
 	public void setRemoved(boolean removed){
 		this.removed = removed;
