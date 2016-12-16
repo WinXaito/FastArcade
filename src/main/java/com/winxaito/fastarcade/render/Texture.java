@@ -22,9 +22,13 @@ import java.nio.ByteBuffer;
 
 import javax.imageio.ImageIO;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.lwjgl.BufferUtils;
 
 public class Texture{
+	private static Logger logger = LogManager.getLogger(Texture.class);
+
 	public static final Texture texWhite = loadTexture("white", "png");
 	public static final Texture texMenuBackground = loadTexture("menuBackground", "png");
 	public static final Texture texMenuButton = loadTexture("ButtonMenu", "png");
@@ -39,9 +43,9 @@ public class Texture{
 	
 	/**
 	 * Constructeur (Utilisé par "loadTexture")
-	 * @param width
-	 * @param height
-	 * @param id
+	 * @param width width
+	 * @param height height
+	 * @param id int
 	 */
 	public Texture(int width, int height, int id){
 		this.width = width;
@@ -50,18 +54,20 @@ public class Texture{
 	}
 	
 	/**
-	 * Loader de texture
-	 * @param name
-	 * @param extension
+	 * Loader de background
+	 * @param name String
+	 * @param extension String
 	 * @return Texture
 	 */
 	public static Texture loadTexture(String name, String extension){
 		BufferedImage image = null;
 		try{
-			//Chargement de la texture 
+			//Chargement de la background
 			image = ImageIO.read(Texture.class.getResource("/textures/" + name + "." + extension));
+			logger.debug("Load texture: /textures/" + name + "." + extension);
 		}catch(IOException e){
-			e.printStackTrace();
+			logger.error("Error for loading texture: /textures/" + name + "." + extension, e);
+			System.exit(1);
 		}
 		
 		int width = image.getWidth();
@@ -85,7 +91,7 @@ public class Texture{
 		
 		buffer.flip();
 		
-		//Génération de la texture OpenGL
+		//Génération de la background OpenGL
 		int id = glGenTextures();
 		glBindTexture(GL_TEXTURE_2D, id);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -96,26 +102,26 @@ public class Texture{
 		
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 		
-		//Retourne une nouvelle texture
+		//Retourne une nouvelle background
 		return new Texture(width, height, id);
 	}
 	
 	/**
-	 * Permet d'appliquer la texture
+	 * Permet d'appliquer la background
 	 */
 	public void bind(){
 		glBindTexture(GL_TEXTURE_2D, id);
 	}
 	
 	/**
-	 * Enlève la texture
+	 * Enlève la background
 	 */
 	public void unbind(){
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	
 	/**
-	 * Getter largeur texture
+	 * Getter largeur background
 	 * @return int
 	 */
 	public int getWidth(){
@@ -123,7 +129,7 @@ public class Texture{
 	}
 	
 	/**
-	 * Getter hauteur texture
+	 * Getter hauteur background
 	 * @return int
 	 */
 	public int getHeight(){

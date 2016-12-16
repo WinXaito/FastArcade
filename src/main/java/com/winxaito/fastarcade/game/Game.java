@@ -37,6 +37,7 @@ public class Game{
 	private long lastRenderTime = System.nanoTime();
 	private int frames = 0;
 	private int ticks = 0;
+	private static int currentTicks = 0;
 	
 	/**
 	 * Constructeur de la classe Game
@@ -117,7 +118,7 @@ public class Game{
 	 * Update du jeu (Correspond au TPS)
 	 */
 	public void update(){
-		input();
+		//input();
 
 		switch(GameState.getState()){
 			case MENU:
@@ -178,6 +179,7 @@ public class Game{
 				GL11.glTranslatef(xScroll, yScroll, 0);
 				level.render();
 				GL11.glTranslatef(-xScroll, -yScroll, 0);
+				level.setActionBackgroundPositions(-xScroll, -yScroll);
 				hud.render();
 				break;
 			case STARTING:
@@ -294,6 +296,7 @@ public class Game{
 				ticks++;
 				tickTimer++;
 				gameTime++;
+				currentTicks++;
 
 				if(gameTime > Main.getTpsLimit() * 60 * 12)
 					gameTime = 0;
@@ -317,12 +320,11 @@ public class Game{
 			render();
 			frames++;
 			ticks++;
+			currentTicks++;
 		}
 
 		if(System.currentTimeMillis() - time > 1000){
 			time += 1000;
-			System.out.println("INFO: Tps: " + ticks + " Fps: " + frames);
-
 			fpsView = frames;
 			tpsView = ticks;
 
@@ -345,5 +347,13 @@ public class Game{
 	 */
 	public static int getTps(){
 		return Game.tpsView;
+	}
+
+	/**
+	 * Return the number of ticks since the game was lauched
+	 * @return int
+     */
+	public static int getCurrentTicks(){
+		return currentTicks;
 	}
 }

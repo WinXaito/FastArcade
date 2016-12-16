@@ -31,6 +31,10 @@ public class Background{
         this(1, 1, 0.3f, BackgroundType.REGULAR_MOVE);
     }
 
+    public Background(BackgroundType backgroundType){
+        this(1, 1, 0, backgroundType);
+    }
+
     public Background(int xTileable, int yTileable, float speed, BackgroundType backgroundType){
         this.xTileable = xTileable * size;
         this.yTileable = yTileable * size;

@@ -4,9 +4,15 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import com.winxaito.fastarcade.entities.action.Action;
+import com.winxaito.fastarcade.entities.action.Blindness;
+import com.winxaito.fastarcade.utils.keyboard.FaKeyboard;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
@@ -40,10 +46,16 @@ public class Level{
 	private Tile[][] transparentTiles;
 	
 	private ArrayList<Entity> entities = new ArrayList<>();
+	private HashMap<Action.ActionType, Action> actions = new HashMap<>();
 	private Player player;
 	
 	private Audio music;	
-	
+
+	public void setActionBackgroundPositions(float x, float y){
+		for(Map.Entry<Action.ActionType, Action> action : actions.entrySet())
+			action.getValue().setBackgroundPositions(x, y);
+	}
+
 	/**
 	 * Constructeur de la classe Level
 	 */
@@ -52,18 +64,25 @@ public class Level{
 		loaderMenu = new LoadingMenu(game, "Chargement du level: " + levelName);
 
 		//Initialisation du background
-		background = new Background();
+		background = new Background(Background.BackgroundType.FIXE);
 
+		//Load level
 		loadLevel(levelName);
 
+		//Load music
+		/* TODO:Enable music
 		try{
 			music = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("music/music.ogg"));
 			music.playAsMusic(0.8f, 0.8f, true);
 		}catch(IOException e){
 			e.printStackTrace();
-		}
-		
+		}*/
+
+		//Init player
 		player = new Player(xSpawn * Tile.getSize(), ySpawn * Tile.getSize(), Tile.getSize(), this);
+
+		//Init actions
+		initActions();
 	}
 	
 	/**
@@ -158,21 +177,38 @@ public class Level{
 		limits[2] = -width * Tile.getSize() + Display.getWidth();
 		limits[3] = -height * Tile.getSize() + Display.getHeight();
 
-		ArrayList<Entity> removedEntity = new ArrayList<>();
-		for(Entity entity : entities){
-			if(entity.isRemoved())
-				removedEntity.add(entity);
-			else
-				entity.update();
-		}
-		for(Entity entity : removedEntity){
-			entities.remove(entity);
+		//Render entities
+		if(!entities.isEmpty()){
+			ArrayList<Entity> removedEntity = new ArrayList<>();
+			for(Entity entity : entities){
+				if(entity.isRemoved())
+					removedEntity.add(entity);
+				else
+					entity.update();
+			}
+			for(Entity entity : removedEntity){
+				entities.remove(entity);
+
+				//TODO:TEST
+				if(entities.isEmpty())
+					actions.get(Action.ActionType.BLINDNESS).activeAction(60*5);
+			}
 		}
 		
 		player.update();
 		background.update(new Vector2f(player.getX(), player.getY()));
+
+		//Update des actions
+		for(Map.Entry<Action.ActionType, Action> action : actions.entrySet())
+			action.getValue().update();
+
+		/*
+			EFFECT
+		 */
+		if(FaKeyboard.isKeyDownLoop(Keyboard.KEY_R))
+			actions.get(Action.ActionType.BLINDNESS).activeAction(60 * 10);
 	}
-	
+
 	/**
 	 * Rendu du level (Appeler par la fonction render de la classe Game)
 	 */
@@ -183,13 +219,22 @@ public class Level{
 		//Rendu des tiles
 		Texture.texTiles.bind();
 		tiles.stream().filter(tile -> tile != null).forEach(Tile::render);
+		Texture.texTiles.unbind();
 
 		entities.forEach(Entity::render);
 		
 		//Rendu du joueur
-		player.render();		
+		player.render();
+
+		//Rendu des actions
+		for(Map.Entry<Action.ActionType, Action> action : actions.entrySet())
+			action.getValue().render();
 	}
-	
+
+	public void initActions(){
+		actions.put(Action.ActionType.BLINDNESS, new Blindness(this));
+	}
+
 	/**
 	 * Getter player
 	 * @return player

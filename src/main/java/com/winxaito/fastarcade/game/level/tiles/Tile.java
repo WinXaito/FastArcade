@@ -21,7 +21,7 @@ public class Tile{
 	}
 	
 	/**
-	 * Type de tiles (Avec offset de la texture et type)
+	 * Type de tiles (Avec offset de la background et type)
 	 */
 	public enum Tiles{
 		BACKGROUND(0, TileType.TRANSPARENT, 16, 1),
@@ -64,7 +64,7 @@ public class Tile{
 	}
 	
 	/**
-	 * Getter de l'id de la Tile (Correspondant à un certain type et une certaine texture)
+	 * Getter de l'id de la Tile (Correspondant à un certain type et une certaine background)
 	 * @return int
 	 */
 	public int getId(){

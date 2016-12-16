@@ -120,7 +120,7 @@ public abstract class Entity{
 	}
 
 	/**
-	 * Getter xo (Offset en X de la texture -> SpriteSheet)
+	 * Getter xo (Offset en X de la background -> SpriteSheet)
 	 * @return xo
 	 */
 	public int getXo(){
@@ -128,7 +128,7 @@ public abstract class Entity{
 	}
 
 	/**
-	 * Setter xo (Offset en X de la texture -> SpriteSheet)
+	 * Setter xo (Offset en X de la background -> SpriteSheet)
 	 * @param xo 
 	 */
 	public void setXo(int xo){
@@ -136,7 +136,7 @@ public abstract class Entity{
 	}
 
 	/**
-	 * Getter yo (Offset en Y de la texture -> SpriteSheet)
+	 * Getter yo (Offset en Y de la background -> SpriteSheet)
 	 * @return yo
 	 */
 	public int getYo(){
@@ -144,7 +144,7 @@ public abstract class Entity{
 	}
 
 	/**
-	 * Getter yo (Offset en Y de la texture -> SpriteSheet)
+	 * Getter yo (Offset en Y de la background -> SpriteSheet)
 	 * @param yo
 	 */
 	public void setYo(int yo){
