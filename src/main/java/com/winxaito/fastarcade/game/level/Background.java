@@ -19,21 +19,33 @@ public class Background{
     private float speed;
     private int xTileable;
     private int yTileable;
+    private BackgroundType backgroundType;
 
-    public Background(){
-        this(1, 1, 0.3f);
+    public enum BackgroundType{
+        FIXE,
+        REGULAR_MOVE,
+        PLAYER_MOVE
     }
 
-    public Background(int xTileable, int yTileable, float speed){
+    public Background(){
+        this(1, 1, 0.3f, BackgroundType.REGULAR_MOVE);
+    }
+
+    public Background(int xTileable, int yTileable, float speed, BackgroundType backgroundType){
         this.xTileable = xTileable * size;
         this.yTileable = yTileable * size;
         this.speed = speed;
+        this.backgroundType = backgroundType;
     }
 
     public void update(Vector2f playerPosition){
         //Update position of background
-        position.setX(playerPosition.getX() * speed);
-        position.setY(position.getY() + (playerPosition.getY() - position.getY()) + speed);
+        if(backgroundType == BackgroundType.REGULAR_MOVE){
+            position.setX(position.getX() + speed);
+        }else if(backgroundType == BackgroundType.PLAYER_MOVE){
+            position.setX(playerPosition.getX() * speed);
+            position.setY(position.getY() + (playerPosition.getY() - position.getY()) + speed);
+        }
     }
 
     public void render(){
