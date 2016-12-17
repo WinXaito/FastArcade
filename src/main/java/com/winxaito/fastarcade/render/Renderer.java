@@ -54,9 +54,15 @@ public class Renderer{
 		glVertex2f(x, y + height);
 	}
 
-	public static void renderTexture(int x, int y, int width, int height, Texture texture){
+	public static void renderTexture(float x, float y, int width, int height, Texture texture){
 		texture.bind();
-			renderQuad(x, y, width, height, Color.white, 0, 0, 0);
+			renderQuad(x, y, width, height, Color.white, 0, 0, 1);
+		texture.unbind();
+	}
+
+	public static void renderTexture(float x, float y, int width, int height, Texture texture, float alpha){
+		texture.bind();
+		renderQuad(x, y, width, height, new Color(1f, 1f, 1f, alpha), 0, 0, 1);
 		texture.unbind();
 	}
 }

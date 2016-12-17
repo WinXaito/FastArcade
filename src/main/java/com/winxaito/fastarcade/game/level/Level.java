@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 
 import com.winxaito.fastarcade.entities.action.Action;
 import com.winxaito.fastarcade.entities.action.Blindness;
+import com.winxaito.fastarcade.entities.action.Blink;
 import com.winxaito.fastarcade.utils.keyboard.FaKeyboard;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
@@ -206,7 +207,7 @@ public class Level{
 			EFFECT
 		 */
 		if(FaKeyboard.isKeyDownLoop(Keyboard.KEY_R))
-			actions.get(Action.ActionType.BLINDNESS).activeAction(60 * 10);
+			actions.get(Action.ActionType.BLINK).activeAction(60 * 5);
 	}
 
 	/**
@@ -233,6 +234,7 @@ public class Level{
 
 	public void initActions(){
 		actions.put(Action.ActionType.BLINDNESS, new Blindness(this));
+		actions.put(Action.ActionType.BLINK, new Blink(this));
 	}
 
 	/**
@@ -276,6 +278,22 @@ public class Level{
 	 */
 	public int getLimits(int index){
 		return limits[index];
+	}
+
+	public int getTopLimit(){
+		return limits[1];
+	}
+
+	public int getLeftLimit(){
+		return limits[0];
+	}
+
+	public int getBottomLimit(){
+		return limits[3];
+	}
+
+	public int getRightLimit(){
+		return limits[2];
 	}
 
 	/**
