@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
@@ -312,5 +313,20 @@ public class Level{
 		
 		if(this.boost < 0)
 			this.boost = 0;
+	}
+
+	public HashMap<Action.ActionType, Action> getActions(){
+		return actions;
+	}
+
+	public ArrayList<Action> getActionsList(){
+		return actions.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toCollection(ArrayList::new));
+	}
+
+	public ArrayList<Action> getActiveActions(){
+		return actions.entrySet().stream()
+				.filter(entry -> entry.getValue().isActive())
+				.map(Map.Entry::getValue)
+				.collect(Collectors.toCollection(ArrayList::new));
 	}
 }

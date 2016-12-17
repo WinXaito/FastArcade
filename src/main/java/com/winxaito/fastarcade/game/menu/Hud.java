@@ -1,7 +1,11 @@
 package com.winxaito.fastarcade.game.menu;
 
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import com.winxaito.fastarcade.entities.action.Action;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.TextureImpl;
@@ -11,29 +15,61 @@ import com.winxaito.fastarcade.game.level.Level;
 
 public class Hud{
 	private Level level;
-	
+	private int yLoc;
+
 	private TrueTypeFont font;
+	private TrueTypeFont fontTitle;
 	private int fps;
 	private int tps;
+	private ArrayList<Action> activeActions;
 	
 	private int boost;
 	
 	public Hud(Level level){
-		Font awtFont = new Font("Times New Roman", Font.BOLD, 24);
-        font = new TrueTypeFont(awtFont, true);
-        this.level = level;
+		this.level = level;
+
+		Font awtFontTitle = new Font("Times New Roman", Font.BOLD, 24);
+		Font awtFont = new Font("Times New Roman", 0, 20);
+        fontTitle = new TrueTypeFont(awtFontTitle, true);
+		font = new TrueTypeFont(awtFont, true);
 	}
 	
 	public void update(){
 		fps = Game.getFps();
 		tps = Game.getTps();
 		boost = level.getBoost();
+		activeActions = level.getActiveActions();
 	}
 	
 	public void render(){
 		TextureImpl.bindNone();
-		font.drawString(10, 10, "FPS: " + fps, Color.white);
-		font.drawString(10, 30, "TPS: " + tps, Color.white);
-		font.drawString(10, 50, "BOOST: " + boost, Color.white);
+		yLoc = 10;
+
+		addString("General:", 10, true);
+		addString("Fps: " + fps, 20, false);
+		addString("Tps: " + tps, 20, false);
+		addString("Boost: " + boost, 20, false);
+
+		addString("Actions:", 10, true);
+
+		if(activeActions == null || activeActions.isEmpty())
+			addString("None", 20, false);
+		else
+			for(Action action : activeActions)
+				addString(action.getActionType().getName() + " - Time left: " + action.getTimeLeftFormat(), 20, false);
+
+		yLoc = 0;
+	}
+
+	private void addString(String text, int xLoc, boolean title){
+		if(title){
+			yLoc += 15;
+			fontTitle.drawString(xLoc, yLoc, text, Color.white);
+			yLoc += 5;
+		}else{
+			font.drawString(xLoc, yLoc, text, Color.white);
+		}
+
+		yLoc += 20;
 	}
 }

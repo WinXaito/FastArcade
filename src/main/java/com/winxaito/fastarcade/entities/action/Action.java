@@ -1,5 +1,6 @@
 package com.winxaito.fastarcade.entities.action;
 
+import com.winxaito.fastarcade.Main;
 import com.winxaito.fastarcade.entities.Player;
 import com.winxaito.fastarcade.game.Game;
 import com.winxaito.fastarcade.game.level.Level;
@@ -7,10 +8,17 @@ import com.winxaito.fastarcade.render.Renderer;
 import com.winxaito.fastarcade.render.Texture;
 import org.lwjgl.opengl.Display;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by: WinXaito (Kevin Vuilleumier)
  */
 public abstract class Action{
+    protected final DecimalFormat dfSecondOnly = new DecimalFormat("00.0");
+    protected final DecimalFormat dfSecond = new DecimalFormat("00");
+    protected final DecimalFormat dfMinut = new DecimalFormat("00");
+    protected final DecimalFormat dfHour = new DecimalFormat("00");
+
     protected float backgroundX, backgroundY;
     protected Texture texture;
     protected Texture text;
@@ -22,10 +30,26 @@ public abstract class Action{
     protected boolean active = false;
 
     public enum ActionType{
-        BLINDNESS,
-        BLINK,
+        BLINDNESS(1, "Blindness"),
+        BLINK(2, "Blink"),
 
-        NOT_DEFINED
+        NOT_DEFINED(0, "Not defined");
+
+        private int id;
+        private String name;
+
+        ActionType(int id, String name){
+            this.id = id;
+            this.name = name;
+        }
+
+        public int getId(){
+            return id;
+        }
+
+        public String getName(){
+            return name;
+        }
     }
 
     public Action(Level level, ActionType actionType){
@@ -105,6 +129,36 @@ public abstract class Action{
             return timeTicks;
 
         return 0;
+    }
+
+    public int getTimeLeftTicks(){
+        if(!active)
+            return 0;
+
+        return timeTicks - (Game.getCurrentTicks() - startTick);
+    }
+
+    public int getTimeLeftSecond(){
+        return getTimeLeftTicks() / Main.getTpsLimit();
+    }
+
+    public String getTimeLeftSecondFormat(){
+        return dfSecondOnly.format((float)getTimeLeftTicks() / (float)Main.getTpsLimit());
+    }
+
+    public String getTimeLeftFormat(){
+        float ts = (float)getTimeLeftTicks() / (float)Main.getTpsLimit();
+
+        int h = (int)ts / 3600;
+        int m = (int)(ts % 3600) / 60;
+        float s = ts % 60f;
+
+        if(ts < 60)
+            return dfSecondOnly.format(s);
+        else if(ts < 3600)
+            return dfMinut.format(m) + ":" + dfSecond.format(s);
+
+        return dfHour.format(h) + ":" + dfMinut.format(m) + ":" + dfSecond.format(s);
     }
 
     public boolean isActive(){
