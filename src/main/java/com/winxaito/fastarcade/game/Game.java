@@ -9,6 +9,7 @@ import com.winxaito.fastarcade.game.menu.*;
 import com.winxaito.fastarcade.game.menu.hud.MainHud;
 import com.winxaito.fastarcade.game.state.GameState;
 import com.winxaito.fastarcade.utils.MusicPlayer;
+import com.winxaito.fastarcade.utils.keyboard.FaKeyboard;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.LWJGLException;
@@ -142,8 +143,9 @@ public class Game{
 	 * Update du jeu (Correspond au TPS)
 	 */
 	public void update(){
-		//input();
+		input();
 		musicPlayer.update();
+		FaKeyboard.update();
 
 		switch(GameState.getState()){
 			case MENU:

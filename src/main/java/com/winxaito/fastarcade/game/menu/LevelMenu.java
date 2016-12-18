@@ -1,6 +1,8 @@
 package com.winxaito.fastarcade.game.menu;
 
 import com.winxaito.fastarcade.game.menu.components.Button;
+import com.winxaito.fastarcade.game.state.MenuState;
+import com.winxaito.fastarcade.utils.keyboard.FaKeyboard;
 import org.lwjgl.opengl.Display;
 
 import com.winxaito.fastarcade.game.Game;
@@ -36,6 +38,9 @@ public class LevelMenu extends Menu{
 	}
 
 	public void update(){
+		if(FaKeyboard.isKeyDown(FaKeyboard.Key.KEY_ESPACE))
+			MenuState.setState(MenuState.MenuStateList.MAIN);
+
 		for(LevelList level : LevelList.values())
 			level.levelMenuGroup.update();
 	}

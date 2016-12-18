@@ -1,6 +1,7 @@
 package com.winxaito.fastarcade.utils;
 
 import com.winxaito.fastarcade.game.state.GameState;
+import com.winxaito.fastarcade.utils.keyboard.FaKeyboard;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.newdawn.slick.openal.Audio;
@@ -22,6 +23,8 @@ public class MusicPlayer{
 
     private AudioType audioType = AudioType.NONE;
     private Audio currentAudio;
+    private float currentPosition;
+    private boolean pause;
     private int menuIndex = 0;
     private int levelIndex = 0;
 
@@ -68,6 +71,11 @@ public class MusicPlayer{
     }
 
     public void update(){
+        input();
+
+        if(pause)
+            return;
+
         if((audioType == AudioType.MENU && menuAudios.size() == 0) || (audioType == AudioType.GAME && levelAudios.size() == 0))
             return;
 
@@ -75,10 +83,7 @@ public class MusicPlayer{
             currentAudio.stop();
 
         if(currentAudio == null || !currentAudio.isPlaying()){
-            logger.debug("OUI");
             if(GameState.isState(GameState.GameStateList.MENU)){
-                logger.debug("MUSIC MENU - " + menuIndex + " - " + menuAudios.size());
-
                 if(menuIndex >= menuAudios.size()){
                     currentAudio = menuAudios.get(0);
                     menuIndex = 1;
@@ -89,9 +94,7 @@ public class MusicPlayer{
 
                 audioType = AudioType.MENU;
             }else if(GameState.isState(GameState.GameStateList.GAME)){
-                logger.debug("MUSIC GAME");
-
-                if(menuIndex >= levelAudios.size()){
+                if(levelIndex >= levelAudios.size()){
                     currentAudio = levelAudios.get(0);
                     levelIndex = 1;
                 }else{
@@ -106,6 +109,39 @@ public class MusicPlayer{
         if(currentAudio != null){
             if(!currentAudio.isPlaying())
                 currentAudio.playAsMusic(1.0f, 1.0f, false);
+        }
+    }
+
+    public void input(){
+        if(FaKeyboard.isKeyDown(FaKeyboard.Key.KEY_M))
+            togglePause();
+
+        if(FaKeyboard.isKeyDown(FaKeyboard.Key.KEY_N))
+            nextMusic();
+    }
+
+    public void togglePause(){
+        if(pause)
+            resume();
+        else
+            pause();
+    }
+
+    public void pause(){
+        if(currentAudio != null && currentAudio.isPlaying()){
+            currentPosition = currentAudio.getPosition();
+            currentAudio.stop();
+
+            pause = true;
+        }
+    }
+
+    public void resume(){
+        if(currentAudio != null && !currentAudio.isPlaying()){
+            currentAudio.playAsMusic(1f, 1f, false);
+            currentAudio.setPosition(currentPosition);
+
+            pause = false;
         }
     }
 

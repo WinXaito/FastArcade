@@ -206,11 +206,11 @@ public class Level{
 		/*
 			EFFECT
 		 */
-		/*if(FaKeyboard.isKeyDownLoop(Keyboard.KEY_R))
-			actions.get(Action.ActionType.BLINK).activeAction(60 * 5);*/
+		if(FaKeyboard.isKeyDown(FaKeyboard.Key.KEY_R))
+			actions.get(Action.ActionType.BLINK).activeAction(60 * 5);
 
 		//Update du HUD options
-		if(FaKeyboard.isKeyDownLoop(Keyboard.KEY_ESCAPE))
+		if(FaKeyboard.isKeyDown(FaKeyboard.Key.KEY_ESPACE))
 			optionsHud.toggleVisible();
 
 		optionsHud.update();
