@@ -12,10 +12,13 @@ import com.winxaito.fastarcade.game.Game;
 import com.winxaito.fastarcade.render.Renderer;
 import com.winxaito.fastarcade.render.Texture;
 
+import java.util.ArrayList;
+
 public class MainMenu extends Menu{
 	private int mainButtonWidth = 250;
 	private int mainButtonHeight = 50;
-	
+
+	private ArrayList<Button> buttons = new ArrayList<>();
 	private Button buttonPlay;
 	private Button buttonOptions;
 	private Button buttonExit;
@@ -27,11 +30,33 @@ public class MainMenu extends Menu{
     	super(game);
     }
 
+    @Override
     public void load(){
-    	//Load buttons
-		buttonPlay = new Button(Display.getWidth() / 2, 50, "Jouer");
-		buttonOptions = new Button(Display.getWidth() / 2, 150, "Options");
-		buttonExit = new Button(Display.getWidth() / 2, 250, "Quitter");
+		//Load buttons
+		buttonPlay = new Button(50, "Jouer"){
+			@Override
+			public void onClick(Button button){
+				MenuState.setState(MenuState.MenuStateList.LEVEL);
+			}
+		};
+
+		buttonOptions = new Button(150, "Options"){
+			@Override
+			public void onClick(Button button){
+				MenuState.setState(MenuState.MenuStateList.OPTIONS);
+			}
+		};
+
+		buttonExit = new Button(250, "Quitter"){
+			@Override
+			public void onClick(Button button){
+				game.exit();
+			}
+		};
+
+		buttons.add(buttonPlay);
+		buttons.add(buttonOptions);
+		buttons.add(buttonExit);
 
 		//Load home music
 		/* TODO: Active music
@@ -42,35 +67,17 @@ public class MainMenu extends Menu{
 		}*/
 	}
 
+	@Override
     public void update(){
     	//TODO: Active mudic
     	/*if(!music.isPlaying())
     		music.playAsMusic(1f, 0.8f, true);*/
 
-    	buttonPlay.setX(Display.getWidth() / 2);
-    	buttonPlay.update();
-    	buttonOptions.setX(Display.getWidth() / 2);
-    	buttonOptions.update();
-    	buttonExit.setX(Display.getWidth() / 2);
-    	buttonExit.update();
-    	
-    	while(Mouse.next()){
-    		if (Mouse.getEventButtonState()) {
-		    	if(buttonPlay.isClick()){
-					//TODO: Remove -> GameState.setState(GameState.GameStateList.MENU_LEVEL);
-					MenuState.setState(MenuState.MenuStateList.LEVEL);
-		    	}else if(buttonOptions.isClick()){
-					//GameState.setState(GameState.GameStateList.MENU_OPTIONS);
-					MenuState.setState(MenuState.MenuStateList.OPTIONS);
-		    	}else if(buttonExit.isClick()){
-		    		game.exit();
-		    	}
-    		}
-    	}
+		buttons.forEach(Button::update);
     }
-    
+
+    @Override
     public void render(){
-    	//Texture.texWhite.bind();
     	int xTiles = Display.getWidth() / 128;
     	int yTiles = Display.getHeight() / 128;
     	for(int x = 0;x < xTiles + 1;x++){
@@ -78,10 +85,8 @@ public class MainMenu extends Menu{
     			Texture.texMenuBackground.bind();
         		Renderer.renderQuad(x * 128, y * 128, 128, 128, Color.white, 0, 0, 2);
     		}
-    	}   
-    	
-    	buttonPlay.render();
-    	buttonOptions.render();
-    	buttonExit.render(); 	
+    	}
+
+		buttons.forEach(Button::render);
     }
 }

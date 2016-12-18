@@ -11,13 +11,16 @@ import org.newdawn.slick.opengl.TextureImpl;
 import com.winxaito.fastarcade.render.Renderer;
 import com.winxaito.fastarcade.render.Texture;
 
-public class Button{
+public abstract class Button implements IButton{
 	private int x = 0;
 	private int y = 0;
+	private int relativeX = 0;
+	private int relativeY = 0;
 	private int width = 300;
 	private int height = 75;
+	private boolean center = false;
 	private boolean hover = false;
-	private boolean click = false;
+	private boolean click = true;
 	
 	private String text;
 	private Color color = Color.white;
@@ -25,10 +28,10 @@ public class Button{
 	private TrueTypeFont font;
 	
 	/**
-	 * Constructeur
-	 * @param x
-	 * @param y
-	 * @param text
+	 * Constructor
+	 * @param x int
+	 * @param y int
+	 * @param text String
 	 */
 	public Button(int x, int y, String text){
 		this.text = text;
@@ -37,14 +40,29 @@ public class Button{
 		
 		init();
 	}
+
+	/**
+	 * Constructor
+	 * @param y int String
+	 * @param text String
+     */
+	public Button(int y, String text){
+		this.text = text;
+		this.y = y - height / 2;
+
+		center = true;
+		x = Display.getWidth() / 2 - width / 2;
+
+		init();
+	}
 	
 	/**
-	 * Constructeur surchargé
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
-	 * @param text
+	 * Constructor
+	 * @param x int
+	 * @param y int
+	 * @param width int
+	 * @param height int
+	 * @param text String
 	 */
 	public Button(int x, int y, int width, int height, String text){
 		this.x = x - width / 2;
@@ -68,17 +86,24 @@ public class Button{
 	 * Update du bouton
 	 */
 	public void update(){
+		if(center)
+			x = Display.getWidth() / 2 - width / 2;
+
 		if(Mouse.getX() > x && Mouse.getX() < x + width &&
 				Mouse.getY() < Display.getHeight() - y && Mouse.getY() > Display.getHeight() - y - height){
 			hover = true;
-			
-			if(Mouse.isButtonDown(0))
-				click = true;
-			else
-				click = false;
+			onStartHover(this);
+
+			if(!click){
+				click = Mouse.isButtonDown(0);
+
+				if(click)
+					onClick(this);
+			}
 		}else{
 			hover = false;
 			click = false;
+			onStopHover(this);
 		}
 	}
 	
@@ -89,25 +114,25 @@ public class Button{
 		//Render quad
 		Texture.texMenuButton.bind();
 		if(!hover)
-			Renderer.renderQuad(x, y, width, height, color, 0, 0, 4);
+			Renderer.renderQuad(x + relativeX, y + relativeY, width, height, color, 0, 0, 4);
 		else
-			Renderer.renderQuad(x, y, width, height, colorHover, 0, 0, 4);
+			Renderer.renderQuad(x + relativeX, y + relativeY, width, height, colorHover, 0, 0, 4);
 		
 		//Render text
 		TextureImpl.bindNone();
-		font.drawString(x + width / 2 - font.getWidth(text) / 2, y + height / 2 - font.getHeight(text) / 2, text, Color.black);
+		font.drawString(x + width / 2 - font.getWidth(text) / 2 + relativeX, y + height / 2 - font.getHeight(text) / 2 + relativeY, text, Color.black);
 	}
 	
 	/**
 	 * Retourne la position en X du bouton
-	 * @return x
+	 * @return int
 	 */
 	public int getX(){
 		return x;
 	}
 
 	/**
-	 * @param x
+	 * @param x int
 	 */
 	public void setX(int x){
 		this.x = x - width / 2;
@@ -115,22 +140,38 @@ public class Button{
 
 	/**
 	 * Retourne la position en Y du bouton
-	 * @return y
+	 * @return int
 	 */
 	public int getY(){
 		return y;
 	}
 
 	/**
-	 * @param y
+	 * @param y int
 	 */
 	public void setY(int y){
 		this.y = y - height / 2;
 	}
 
+	public int getRelativeX(){
+		return relativeX;
+	}
+
+	public void setRelativeX(int relativeX){
+		this.relativeX = relativeX;
+	}
+
+	public int getRelativeY(){
+		return relativeY;
+	}
+
+	public void setRelativeY(int relativeY){
+		this.relativeY = relativeY;
+	}
+
 	/**
 	 * Si la souris est sur le bouton
-	 * @return hover
+	 * @return boolean
 	 */
 	public boolean isHover(){
 		return hover;
@@ -138,9 +179,17 @@ public class Button{
 
 	/**
 	 * Si la souris est sur le bouton et pressé (Click)
-	 * @return click
+	 * @return click boolean
 	 */
 	public boolean isClick(){
 		return click;
+	}
+
+	/**
+	 * Si le bouton doit rester centré
+	 * @return boolean
+     */
+	public boolean isCenter(){
+		return center;
 	}
 }

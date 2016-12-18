@@ -15,7 +15,11 @@ public abstract class Menu{
 	protected TrueTypeFont font;
 	protected Texture background;
 	protected Game game;
-	
+
+	public Menu(){
+		initializeFont();
+	}
+
 	public Menu(Game game){
 		this.game = game;
 		initializeFont();
@@ -42,7 +46,7 @@ public abstract class Menu{
 	public abstract void load();
 	public abstract void update();
 	public abstract void render();
-	
+
 	protected void drawStringLeft(int x, int y, String text){
 		TextureImpl.bindNone();
 		font.drawString(x, y - font.getHeight(text) / 2, text);

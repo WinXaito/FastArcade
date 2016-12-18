@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import com.winxaito.fastarcade.entities.action.Action;
 import com.winxaito.fastarcade.entities.action.Blindness;
 import com.winxaito.fastarcade.entities.action.Blink;
+import com.winxaito.fastarcade.game.menu.hud.OptionsHud;
 import com.winxaito.fastarcade.utils.keyboard.FaKeyboard;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
@@ -39,8 +40,10 @@ public class Level{
 	private int boost = 100;
 	private int[] limits = new int[4];
 	private float gravity = 4.4f;
+	private boolean loaded = false;
 	
 	private LoadingMenu loaderMenu;
+	private OptionsHud optionsHud;
 
 	private Background background;
 	private ArrayList<Tile> tiles = new ArrayList<>();
@@ -65,20 +68,14 @@ public class Level{
 		//Création du LoaderMenu
 		loaderMenu = new LoadingMenu(game, "Chargement du level: " + levelName);
 
+		//Initialisation du menu options (HUD)
+		optionsHud = new OptionsHud(game, this);
+
 		//Initialisation du background
 		background = new Background(Background.BackgroundType.FIXE);
 
 		//Load level
 		loadLevel(levelName);
-
-		//Load music
-		/* TODO:Enable music
-		try{
-			music = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("music/music.ogg"));
-			music.playAsMusic(0.8f, 0.8f, true);
-		}catch(IOException e){
-			e.printStackTrace();
-		}*/
 
 		//Init player
 		player = new Player(xSpawn * Tile.getSize(), ySpawn * Tile.getSize(), Tile.getSize(), this);
@@ -91,6 +88,8 @@ public class Level{
 	 * Chargement d'un level
 	 */
 	public void loadLevel(String name){
+		loaderMenu.render();
+
 		int[] pixels;
 		BufferedImage image = null;
 		try{
@@ -165,10 +164,22 @@ public class Level{
 				}
 			}
 		}
+
+		//Load music
+		/* TODO:Enable music */
+		try{
+			music = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("music/music.ogg"));
+			music.playAsMusic(0.8f, 0.8f, true);
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+
+		loaded = true;
 	}
 	
 	public void unloadLevel(){
 		music.stop();
+		loaded = false;
 	}
 	
 	/**
@@ -207,8 +218,14 @@ public class Level{
 		/*
 			EFFECT
 		 */
-		if(FaKeyboard.isKeyDownLoop(Keyboard.KEY_R))
-			actions.get(Action.ActionType.BLINK).activeAction(60 * 5);
+		/*if(FaKeyboard.isKeyDownLoop(Keyboard.KEY_R))
+			actions.get(Action.ActionType.BLINK).activeAction(60 * 5);*/
+
+		//Update du HUD options
+		if(FaKeyboard.isKeyDownLoop(Keyboard.KEY_ESCAPE))
+			optionsHud.toggleVisible();
+
+		optionsHud.update();
 	}
 
 	/**
@@ -231,6 +248,10 @@ public class Level{
 		//Rendu des actions
 		for(Map.Entry<Action.ActionType, Action> action : actions.entrySet())
 			action.getValue().render();
+	}
+
+	public void renderHud(){
+		optionsHud.render();
 	}
 
 	public void initActions(){
@@ -295,6 +316,10 @@ public class Level{
 
 	public int getRightLimit(){
 		return limits[2];
+	}
+
+	public boolean isLoaded(){
+		return loaded;
 	}
 
 	/**

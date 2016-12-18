@@ -9,8 +9,8 @@ public class Main{
 	private static String appVersion = "Alpha-0.0.1";
 	private static int appId = 0;
 	
-	private static int startWidth = 720;
-	private static int startHeight = 480;
+	private static int startWidth = 1280;
+	private static int startHeight = 720;
 	private static int tpsLimit = 60;
 	private static int fpsLimit = 60;
 	private static boolean fullScreen = false;

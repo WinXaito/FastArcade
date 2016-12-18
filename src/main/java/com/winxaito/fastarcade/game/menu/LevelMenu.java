@@ -7,50 +7,41 @@ import com.winxaito.fastarcade.game.Game;
 
 public class LevelMenu extends Menu{
 	public enum LevelList{
-		Level1("1", 0, 1, new Button(Display.getWidth() / 2, 50, "Jouer 1"), new Button(Display.getWidth() / 2, 150, "Supprimer")),
-		LevelFirst("first", 1, 2, new Button(Display.getWidth() / 2, 300, "Jouer First"), new Button(Display.getWidth() / 2, 400, "Supprimer"));
-		
+		Level1("1", 0, 1, new LevelMenuGroup("1", 0)),
+		LevelFirst("first", 1, 2, new LevelMenuGroup("first", 1));
+
+		protected LevelMenu levelMenu;
 		protected String name;
 		protected int id;
 		protected int difficult;
-		protected Button buttonPlay;
-		protected Button buttonRemove;
+		protected LevelMenuGroup levelMenuGroup;
 		
-		LevelList(String name, int id, int difficult, Button play, Button remove){
+		LevelList(String name, int id, int difficult, LevelMenuGroup levelMenuGroup){
 			this.name = name;
 			this.id = id;
 			this.difficult = difficult;
-			this.buttonPlay = play;
-			this.buttonRemove = remove;
+			this.levelMenuGroup = levelMenuGroup;
 		}
 	}
 	
 	public LevelMenu(Game game){
 		super(game);
+
+		for(LevelList level : LevelList.values())
+			level.levelMenuGroup.setGame(game);
 	}
 
 	@Override
 	public void load(){
-
 	}
 
 	public void update(){
-		for(LevelList level : LevelList.values()){
-			level.buttonPlay.update();
-			level.buttonRemove.update();
-			
-			if(level.buttonPlay.isClick()){
-				game.loadLevel(level.name);
-			}else if(level.buttonRemove.isClick()){
-				System.out.println("REMOVE LEVEL");
-			}
-		}
+		for(LevelList level : LevelList.values())
+			level.levelMenuGroup.update();
 	}
 	
 	public void render(){
-		for(LevelList level : LevelList.values()){
-			level.buttonPlay.render();
-			level.buttonRemove.render();
-		}
+		for(LevelList level : LevelList.values())
+			level.levelMenuGroup.render();
 	}
 }

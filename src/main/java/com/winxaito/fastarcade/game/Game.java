@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 
 import com.winxaito.fastarcade.game.menu.*;
+import com.winxaito.fastarcade.game.menu.hud.MainHud;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
@@ -21,10 +22,10 @@ public class Game{
 	private int height;
 	private static int fpsView;
 	private static int tpsView;
-	private boolean running;
+	private boolean running = false;
 	
 	private Level level;
-	private Hud hud;
+	private MainHud mainHud;
 	private LoadingMenu loadingMenu;
 	private Menus menus;
 	private float xScroll;
@@ -41,8 +42,8 @@ public class Game{
 	
 	/**
 	 * Constructeur de la classe Game
-	 * @param width
-	 * @param height
+	 * @param width int
+	 * @param height int
 	 */
 	public Game(int width, int height){
 		GameState.setState(GameState.GameStateList.STARTING);
@@ -102,6 +103,9 @@ public class Game{
 	 * Quitte le jeu
 	 */
 	public void exit(){
+		if(level != null && level.isLoaded())
+			level.unloadLevel();
+
 		Display.destroy();
 		System.exit(0);
 	}
@@ -126,7 +130,7 @@ public class Game{
 				break;
 			case LEVEL_GAME:
 				level.update();
-				hud.update();
+				mainHud.update();
 				float xa = -level.getPlayer().getX() + width / 2 - level.getPlayer().getSize() / 2;
 				float ya = -level.getPlayer().getY() + height / 2 - level.getPlayer().getSize() / 2;
 				translateView(xa, ya);
@@ -180,7 +184,8 @@ public class Game{
 				level.render();
 				GL11.glTranslatef(-xScroll, -yScroll, 0);
 				level.setActionBackgroundPositions(-xScroll, -yScroll);
-				hud.render();
+				mainHud.render();
+				level.renderHud();
 				break;
 			case STARTING:
 				loadingMenu.render();
@@ -190,7 +195,7 @@ public class Game{
 	
 	public void loadLevel(String levelName){
 		level = new Level(this, levelName);
-		hud = new Hud(level);
+		mainHud = new MainHud(level);
 		
 		GameState.setState(GameState.GameStateList.LEVEL_GAME);
 	}
