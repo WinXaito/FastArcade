@@ -1,11 +1,10 @@
 package com.winxaito.fastarcade.game.menu.hud;
 
 import com.winxaito.fastarcade.game.Game;
-import com.winxaito.fastarcade.game.GameState;
+import com.winxaito.fastarcade.game.state.GameState;
 import com.winxaito.fastarcade.game.level.Level;
 import com.winxaito.fastarcade.game.menu.Menu;
 import com.winxaito.fastarcade.game.menu.components.Button;
-import com.winxaito.fastarcade.game.menu.components.IButton;
 import org.lwjgl.opengl.Display;
 
 import java.util.ArrayList;

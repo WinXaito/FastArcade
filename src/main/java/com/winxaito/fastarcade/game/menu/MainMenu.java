@@ -1,8 +1,7 @@
 package com.winxaito.fastarcade.game.menu;
 
-import com.winxaito.fastarcade.game.GameState;
 import com.winxaito.fastarcade.game.menu.components.Button;
-import org.lwjgl.input.Mouse;
+import com.winxaito.fastarcade.game.state.MenuState;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
@@ -61,7 +60,7 @@ public class MainMenu extends Menu{
 		//Load home music
 		/* TODO: Active music
 		try{
-			music = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("music/home.ogg"));
+			music = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("music/1.ogg"));
 		}catch(IOException e){
 			e.printStackTrace();
 		}*/

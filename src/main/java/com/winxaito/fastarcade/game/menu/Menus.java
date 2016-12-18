@@ -1,6 +1,7 @@
 package com.winxaito.fastarcade.game.menu;
 
 import com.winxaito.fastarcade.game.Game;
+import com.winxaito.fastarcade.game.state.MenuState;
 
 import java.util.HashMap;
 import java.util.Map;

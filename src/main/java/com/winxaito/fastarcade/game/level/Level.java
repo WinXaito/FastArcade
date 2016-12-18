@@ -53,8 +53,6 @@ public class Level{
 	private ArrayList<Entity> entities = new ArrayList<>();
 	private HashMap<Action.ActionType, Action> actions = new HashMap<>();
 	private Player player;
-	
-	private Audio music;	
 
 	public void setActionBackgroundPositions(float x, float y){
 		for(Map.Entry<Action.ActionType, Action> action : actions.entrySet())
@@ -165,20 +163,10 @@ public class Level{
 			}
 		}
 
-		//Load music
-		/* TODO:Enable music */
-		try{
-			music = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("music/music.ogg"));
-			music.playAsMusic(0.8f, 0.8f, true);
-		}catch(IOException e){
-			e.printStackTrace();
-		}
-
 		loaded = true;
 	}
 	
 	public void unloadLevel(){
-		music.stop();
 		loaded = false;
 	}
 	

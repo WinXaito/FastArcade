@@ -2,9 +2,15 @@ package com.winxaito.fastarcade.game;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 import com.winxaito.fastarcade.game.menu.*;
 import com.winxaito.fastarcade.game.menu.hud.MainHud;
+import com.winxaito.fastarcade.game.state.GameState;
+import com.winxaito.fastarcade.utils.MusicPlayer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
@@ -16,6 +22,8 @@ import com.winxaito.fastarcade.Main;
 import com.winxaito.fastarcade.game.level.Level;
 
 public class Game{
+	private Logger logger = LogManager.getLogger(Game.class);
+
 	private int scaleWidth = 1920;
 	private int scaleHeight = 1080;
 	private int width;
@@ -23,7 +31,8 @@ public class Game{
 	private static int fpsView;
 	private static int tpsView;
 	private boolean running = false;
-	
+
+	private MusicPlayer musicPlayer;
 	private Level level;
 	private MainHud mainHud;
 	private LoadingMenu loadingMenu;
@@ -63,9 +72,12 @@ public class Game{
 		//Création du menu
 		//menu = new MainMenu(this);
 		menus = new Menus(this, loadingMenu);
-		
-		//Chargement des menus
-		loadMenus();
+
+		//Initialisation du MusicPlayer
+		musicPlayer = new MusicPlayer();
+
+		//Chargement (Menu, music, etc.)
+		load();
 	}
 	
 	/**
@@ -106,6 +118,7 @@ public class Game{
 		if(level != null && level.isLoaded())
 			level.unloadLevel();
 
+		musicPlayer.exit();
 		Display.destroy();
 		System.exit(0);
 	}
@@ -113,8 +126,15 @@ public class Game{
 	/**
 	 * Menu loading (With starting menu)
      */
-	private void loadMenus(){
+	private void load(){
 		menus.load();
+
+		try{
+			musicPlayer.load();
+		}catch(IOException | URISyntaxException e){
+			logger.error("Error for load music", e);
+		}
+
 		GameState.setState(GameState.GameStateList.MENU);
 	}
 	
@@ -123,12 +143,13 @@ public class Game{
 	 */
 	public void update(){
 		//input();
+		musicPlayer.update();
 
 		switch(GameState.getState()){
 			case MENU:
 				menus.update();
 				break;
-			case LEVEL_GAME:
+			case GAME:
 				level.update();
 				mainHud.update();
 				float xa = -level.getPlayer().getX() + width / 2 - level.getPlayer().getSize() / 2;
@@ -142,27 +163,7 @@ public class Game{
 	 * Manage game inputs
      */
 	private void input(){
-		while (Keyboard.next()) {
-			if (Keyboard.getEventKeyState()){
-				if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && !Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
-					switch(GameState.getState()){
-						case LEVEL_GAME:
-							GameState.setState(GameState.GameStateList.LEVEL_OPTIONS);
-							break;
-						case LEVEL_OPTIONS:
-							GameState.setState(GameState.GameStateList.LEVEL_GAME);
-							break;
-					}
-				}
-
-				//TODO: Modifier l'action pour quitter la partie (Via le menu)
-				if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) &&
-						GameState.isState(GameState.GameStateList.LEVEL_GAME)){
-					level.unloadLevel();
-					GameState.setState(GameState.GameStateList.MENU);
-				}
-			}
-		}
+		//TODO: Input
 	}
 	
 	/**
@@ -176,19 +177,19 @@ public class Game{
 		initializeView();
 
 		switch(GameState.getState()){
+			case STARTING:
+				loadingMenu.render();
+				break;
 			case MENU:
 				menus.render();
 				break;
-			case LEVEL_GAME:
+			case GAME:
 				GL11.glTranslatef(xScroll, yScroll, 0);
 				level.render();
 				GL11.glTranslatef(-xScroll, -yScroll, 0);
 				level.setActionBackgroundPositions(-xScroll, -yScroll);
 				mainHud.render();
 				level.renderHud();
-				break;
-			case STARTING:
-				loadingMenu.render();
 				break;
 		}
 	}
@@ -197,7 +198,7 @@ public class Game{
 		level = new Level(this, levelName);
 		mainHud = new MainHud(level);
 		
-		GameState.setState(GameState.GameStateList.LEVEL_GAME);
+		GameState.setState(GameState.GameStateList.GAME);
 	}
 
 	/**

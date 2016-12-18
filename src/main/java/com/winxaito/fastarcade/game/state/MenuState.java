@@ -1,13 +1,12 @@
-package com.winxaito.fastarcade.game.menu;
+package com.winxaito.fastarcade.game.state;
 
-import com.winxaito.fastarcade.game.GameState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
  * Created by: WinXaito (Kevin Vuilleumier)
  */
-public class MenuState{
+public class MenuState extends State{
     private static final Logger logger = LogManager.getLogger(GameState.class.getName());
     private static MenuState.MenuStateList menuState = MenuStateList.MAIN;
 

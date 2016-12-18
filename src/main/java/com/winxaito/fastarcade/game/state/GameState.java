@@ -1,4 +1,4 @@
-package com.winxaito.fastarcade.game;
+package com.winxaito.fastarcade.game.state;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -6,22 +6,14 @@ import org.apache.logging.log4j.Logger;
 /**
  * Created by: WinXaito (Kevin Vuilleumier)
  */
-public class GameState{
+public class GameState extends State{
     private static final Logger logger = LogManager.getLogger(GameState.class.getName());
     private static GameStateList gameState = GameStateList.STARTING;
 
     public enum GameStateList{
         STARTING,
-        GAMELOADER,
-
         MENU,
-
         GAME,
-        GAME_OPTIONS,
-
-        LEVEL_LOAD,
-        LEVEL_GAME,
-        LEVEL_OPTIONS,
 
         NONE,
     }
