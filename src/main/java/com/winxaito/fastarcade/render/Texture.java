@@ -32,9 +32,12 @@ public class Texture{
 	public static final Texture texWhite = loadTexture("white", "png");
 	public static final Texture texMenuBackground = loadTexture("menuBackground", "png");
 	public static final Texture texMenuButton = loadTexture("ButtonMenu", "png");
-	public static final Texture textBoost_100 = loadTexture("boost", "png");
 	public static final Texture texTiles = loadTexture("terrain", "png");
 	public static final Texture texPlayer = loadTexture("player", "png");
+
+	//Entities
+	public static final Texture textBoost = loadTexture("entities/boost", "png");
+	public static final Texture textPoint = loadTexture("entities/point", "png");
 	
 	
 	private int width;

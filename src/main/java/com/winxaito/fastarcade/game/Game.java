@@ -14,6 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
@@ -152,6 +153,9 @@ public class Game{
 				menus.update();
 				break;
 			case GAME:
+				if(!Mouse.isGrabbed() && !level.getOptionsHud().isVisible())
+					Mouse.setGrabbed(true);
+
 				level.update();
 				mainHud.update();
 				float xa = -level.getPlayer().getX() + width / 2 - level.getPlayer().getSize() / 2;

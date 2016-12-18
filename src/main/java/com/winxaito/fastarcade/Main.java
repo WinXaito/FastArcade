@@ -14,7 +14,7 @@ public class Main{
 	private static int tpsLimit = 60;
 	private static int fpsLimit = 60;
 	private static boolean fullScreen = false;
-	private static boolean borderless = false;
+	private static boolean borderless = true;
 	private static boolean vSync = true;
 	private static boolean sleep = false;
 	

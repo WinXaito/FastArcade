@@ -23,6 +23,7 @@ public class MainHud{
 	private ArrayList<Action> activeActions;
 	
 	private int boost;
+	private int point;
 	
 	public MainHud(Level level){
 		this.level = level;
@@ -38,6 +39,7 @@ public class MainHud{
 		tps = Game.getTps();
 		gameTick = Game.getCurrentTicks();
 		boost = level.getBoost();
+		point = level.getPoint();
 		activeActions = level.getActiveActions();
 	}
 	
@@ -50,6 +52,7 @@ public class MainHud{
 		addString("Tps: " + tps, 20, false);
 		addString("Game tick: " + gameTick, 20, false);
 		addString("Boost: " + boost, 20, false);
+		addString("Point: " + point, 20, false);
 
 		addString("Actions:", 10, true);
 

@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 /**
  * Created by: WinXaito (Kevin Vuilleumier)
  */
-public class MenuState extends State{
+public class MenuState{
     private static final Logger logger = LogManager.getLogger(GameState.class.getName());
     private static MenuState.MenuStateList menuState = MenuStateList.MAIN;
 

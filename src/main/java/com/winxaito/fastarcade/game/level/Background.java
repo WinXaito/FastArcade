@@ -32,7 +32,7 @@ public class Background{
     }
 
     public Background(BackgroundType backgroundType){
-        this(1, 1, 0, backgroundType);
+        this(1, 1, 0.3f, backgroundType);
     }
 
     public Background(int xTileable, int yTileable, float speed, BackgroundType backgroundType){

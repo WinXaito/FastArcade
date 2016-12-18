@@ -17,9 +17,10 @@ public class Player extends Entity{
 		
 	/**
 	 * Constructeur
-	 * @param x
-	 * @param y
-	 * @param size
+	 * @param x int
+	 * @param y int
+	 * @param size int
+	 * @param level Level
 	 */
 	public Player(int x, int y, int size, Level level){
 		super(x, y, size, level);

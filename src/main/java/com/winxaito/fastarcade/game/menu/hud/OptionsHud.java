@@ -5,6 +5,7 @@ import com.winxaito.fastarcade.game.state.GameState;
 import com.winxaito.fastarcade.game.level.Level;
 import com.winxaito.fastarcade.game.menu.Menu;
 import com.winxaito.fastarcade.game.menu.components.Button;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 import java.util.ArrayList;
@@ -90,9 +91,19 @@ public class OptionsHud extends Menu{
 
     public void setVisible(boolean visible){
         this.visible = visible;
+
+        if(Mouse.isGrabbed() && visible)
+            Mouse.setGrabbed(false);
+        else if(!Mouse.isGrabbed() && !visible)
+            Mouse.setGrabbed(true);
     }
 
     public void toggleVisible(){
         visible = !visible;
+
+        if(Mouse.isGrabbed() && visible)
+            Mouse.setGrabbed(false);
+        else if(!Mouse.isGrabbed() && !visible)
+            Mouse.setGrabbed(true);
     }
 }

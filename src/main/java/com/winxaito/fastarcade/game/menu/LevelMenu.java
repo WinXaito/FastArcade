@@ -10,7 +10,8 @@ import com.winxaito.fastarcade.game.Game;
 public class LevelMenu extends Menu{
 	public enum LevelList{
 		Level1("1", 0, 1, new LevelMenuGroup("1", 0)),
-		LevelFirst("first", 1, 2, new LevelMenuGroup("first", 1));
+		LevelFirst("first", 1, 2, new LevelMenuGroup("first", 1)),
+		LevelSample("sample", 2, 2, new LevelMenuGroup("sample", 1));
 
 		protected LevelMenu levelMenu;
 		protected String name;

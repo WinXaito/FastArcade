@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 /**
  * Created by: WinXaito (Kevin Vuilleumier)
  */
-public class GameState extends State{
+public class GameState{
     private static final Logger logger = LogManager.getLogger(GameState.class.getName());
     private static GameStateList gameState = GameStateList.STARTING;
 

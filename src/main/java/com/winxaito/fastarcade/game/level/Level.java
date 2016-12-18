@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import com.winxaito.fastarcade.entities.action.Action;
 import com.winxaito.fastarcade.entities.action.Blindness;
 import com.winxaito.fastarcade.entities.action.Blink;
+import com.winxaito.fastarcade.entities.items.Point;
 import com.winxaito.fastarcade.game.menu.hud.OptionsHud;
 import com.winxaito.fastarcade.utils.keyboard.FaKeyboard;
 import org.lwjgl.input.Keyboard;
@@ -37,7 +38,8 @@ public class Level{
 	private int height = 20;
 	private int xSpawn = 2;
 	private int ySpawn = 2;
-	private int boost = 100;
+	private int boost = 0;
+	private int point = 0;
 	private int[] limits = new int[4];
 	private float gravity = 4.4f;
 	private boolean loaded = false;
@@ -70,7 +72,8 @@ public class Level{
 		optionsHud = new OptionsHud(game, this);
 
 		//Initialisation du background
-		background = new Background(Background.BackgroundType.FIXE);
+		//TODO: background = new Background(Background.BackgroundType.PLAYER_MOVE);
+		background = new Background(5, 1, 0.3f, Background.BackgroundType.PLAYER_MOVE);
 
 		//Load level
 		loadLevel(levelName);
@@ -127,7 +130,13 @@ public class Level{
 					transparentTiles[x][y] = new Tile(x, y, Tiles.BACKGROUND);
 					xSpawn = x;
 					ySpawn = y;
+				}else if(pixels[x + y * width] == 0xFFFF0000){
+					//TransparentTile
+					transparentTiles[x][y] = new Tile(x, y, Tiles.DAMIER);
+					System.out.println("___#####DAMIER____ + " + - x + " - " + y);
 				}
+
+				System.out.println("_OTHER_");
 			}
 		}
 		
@@ -158,6 +167,9 @@ public class Level{
 			for(int y = 0; y < height; y++){
 				if(pixels[x + y * width] == 0xFFFFAA00){
 					entities.add(new Boost(x * Tile.getSize() + Tile.getSize() / 6,
+							y * Tile.getSize() + Tile.getSize() / 6, (int)(Tile.getSize() / 1.5), this));
+				}else if(pixels[x + y * width] == 0xFFFF0000){
+					entities.add(new Point(x * Tile.getSize() + Tile.getSize() / 6,
 							y * Tile.getSize() + Tile.getSize() / 6, (int)(Tile.getSize() / 1.5), this));
 				}
 			}
@@ -328,6 +340,14 @@ public class Level{
 			this.boost = 0;
 	}
 
+	public int getPoint(){
+		return point;
+	}
+
+	public void setPoint(int point){
+		this.point = point;
+	}
+
 	public HashMap<Action.ActionType, Action> getActions(){
 		return actions;
 	}
@@ -341,5 +361,9 @@ public class Level{
 				.filter(entry -> entry.getValue().isActive())
 				.map(Map.Entry::getValue)
 				.collect(Collectors.toCollection(ArrayList::new));
+	}
+
+	public OptionsHud getOptionsHud(){
+		return optionsHud;
 	}
 }

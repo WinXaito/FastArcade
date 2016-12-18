@@ -17,7 +17,7 @@ public class LevelMenuGroup extends Menu{
         super();
         this.levelName = levelName;
 
-        buttonPlay = new Button(50 + group * 250, "Jouer"){
+        buttonPlay = new Button(50 + group * 250, "Jouer (" + levelName + ")"){
             @Override
             public void onClick(Button button){
                 game.loadLevel(levelName);

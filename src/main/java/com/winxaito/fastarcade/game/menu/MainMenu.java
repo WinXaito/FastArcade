@@ -56,22 +56,10 @@ public class MainMenu extends Menu{
 		buttons.add(buttonPlay);
 		buttons.add(buttonOptions);
 		buttons.add(buttonExit);
-
-		//Load home music
-		/* TODO: Active music
-		try{
-			music = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("music/1.ogg"));
-		}catch(IOException e){
-			e.printStackTrace();
-		}*/
 	}
 
 	@Override
     public void update(){
-    	//TODO: Active mudic
-    	/*if(!music.isPlaying())
-    		music.playAsMusic(1f, 0.8f, true);*/
-
 		buttons.forEach(Button::update);
     }
 

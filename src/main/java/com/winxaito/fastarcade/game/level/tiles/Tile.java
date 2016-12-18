@@ -28,7 +28,8 @@ public class Tile{
 		DIRT(1, TileType.SOLID, 0, 0),
 		GRASS(2, TileType.SOLID, 1, 0),
 		STONE(3, TileType.SOLID, 3, 0),
-		CLOUD(4, TileType.TRANSPARENT, 3, 0);
+		CLOUD(4, TileType.TRANSPARENT, 3, 0),
+		DAMIER(5, TileType.TRANSPARENT, 14, 0);
 		
 		protected int id;
 		protected TileType tileType;
