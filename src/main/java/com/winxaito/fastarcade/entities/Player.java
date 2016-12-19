@@ -13,6 +13,7 @@ public class Player extends Entity{
 	private float speedXMultiplicator;
 	private float speedYMultiplicator;
 	private Level level;
+	private boolean autorizeMovement = true;
 	int z = 0;
 		
 	/**
@@ -48,42 +49,45 @@ public class Player extends Entity{
 		
 		speedXMultiplicator = 1;
 		speedYMultiplicator = 1;
-		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
-			if(level.getBoost() > 0){
-				level.setBoost(level.getBoost() - 1);
-				speedXMultiplicator = 2;
-				speedYMultiplicator = 1.4f;
+
+		if(autorizeMovement){
+			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
+				if(level.getBoost() > 0){
+					level.setBoost(level.getBoost() - 1);
+					speedXMultiplicator = 2;
+					speedYMultiplicator = 1.4f;
+				}
 			}
-		}
-		
-		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE) && isGrounded()){
-			//Jump (saut)
-			ya -= 25f;
-		}
-		
-		if(Keyboard.isKeyDown(Keyboard.KEY_W)){
-			//Déplacement vers le haut
-			ya -= speed * 3 * speedYMultiplicator;
-			z = 1;
-		}
-		
-		if(Keyboard.isKeyDown(Keyboard.KEY_S)){
-			//Déplacement vers le bas
-			ya += speed * speedYMultiplicator;
-		}
-		
-		if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-			//Déplacement vers la droite
-			anim.start();
-			direction = 1;
-			xa += speed * speedXMultiplicator;
-		}
-		
-		if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-			//Déplacement vers la gauche
-			anim.start();
-			direction = 2;
-			xa -= speed * speedXMultiplicator;
+
+			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE) && isGrounded()){
+				//Jump (saut)
+				ya -= 25f;
+			}
+
+			if(Keyboard.isKeyDown(Keyboard.KEY_W)){
+				//Déplacement vers le haut
+				ya -= speed * 3 * speedYMultiplicator;
+				z = 1;
+			}
+
+			if(Keyboard.isKeyDown(Keyboard.KEY_S)){
+				//Déplacement vers le bas
+				ya += speed * speedYMultiplicator;
+			}
+
+			if(Keyboard.isKeyDown(Keyboard.KEY_D)){
+				//Déplacement vers la droite
+				anim.start();
+				direction = 1;
+				xa += speed * speedXMultiplicator;
+			}
+
+			if(Keyboard.isKeyDown(Keyboard.KEY_A)){
+				//Déplacement vers la gauche
+				anim.start();
+				direction = 2;
+				xa -= speed * speedXMultiplicator;
+			}
 		}
 		
 		
@@ -115,5 +119,13 @@ public class Player extends Entity{
 			Renderer.renderQuad(x, y, size, size, color, direction, anim.getCurrentFrame(), texSize);
 		else
 			Renderer.renderQuad(x, y, size, size, color, direction, 3, texSize);
+	}
+
+	public boolean isAutorizeMovement(){
+		return autorizeMovement;
+	}
+
+	public void setAutorizeMovement(boolean autorizeMovement){
+		this.autorizeMovement = autorizeMovement;
 	}
 }

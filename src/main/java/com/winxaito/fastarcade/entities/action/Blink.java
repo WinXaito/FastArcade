@@ -38,7 +38,6 @@ public class Blink extends Action{
             }
 
             alpha = (float)colorTick / (float)colorTicksTime;
-            System.out.println(alpha);
         }
     }
 

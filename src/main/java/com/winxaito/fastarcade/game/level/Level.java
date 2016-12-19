@@ -10,11 +10,14 @@ import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
+import com.winxaito.fastarcade.Main;
 import com.winxaito.fastarcade.entities.action.Action;
 import com.winxaito.fastarcade.entities.action.Blindness;
 import com.winxaito.fastarcade.entities.action.Blink;
 import com.winxaito.fastarcade.entities.items.Point;
 import com.winxaito.fastarcade.game.menu.hud.OptionsHud;
+import com.winxaito.fastarcade.utils.Stopwatch;
+import com.winxaito.fastarcade.utils.Timer;
 import com.winxaito.fastarcade.utils.keyboard.FaKeyboard;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
@@ -34,6 +37,7 @@ import com.winxaito.fastarcade.game.menu.LoadingMenu;
 import com.winxaito.fastarcade.render.Texture;
 
 public class Level{
+	private Game game;
 	private int width = 20;
 	private int height = 20;
 	private int xSpawn = 2;
@@ -43,6 +47,14 @@ public class Level{
 	private int[] limits = new int[4];
 	private float gravity = 4.4f;
 	private boolean loaded = false;
+
+	private boolean levelStart = false;
+	private int timeStart = 5 * Main.getTpsLimit();
+	private int currentTimeStart = 0;
+	private Stopwatch stopwatch;
+	private Timer timer;
+	private int finalPoint;
+	private boolean loose = false;
 	
 	private LoadingMenu loaderMenu;
 	private OptionsHud optionsHud;
@@ -65,6 +77,8 @@ public class Level{
 	 * Constructeur de la classe Level
 	 */
 	public Level(Game game, String levelName){
+		this.game = game;
+
 		//Création du LoaderMenu
 		loaderMenu = new LoadingMenu(game, "Chargement du level: " + levelName);
 
@@ -80,6 +94,11 @@ public class Level{
 
 		//Init player
 		player = new Player(xSpawn * Tile.getSize(), ySpawn * Tile.getSize(), Tile.getSize(), this);
+		player.setAutorizeMovement(false);
+
+		//Init stopwatch
+		stopwatch = new Stopwatch();
+		timer = new Timer(30);
 
 		//Init actions
 		initActions();
@@ -133,10 +152,7 @@ public class Level{
 				}else if(pixels[x + y * width] == 0xFFFF0000){
 					//TransparentTile
 					transparentTiles[x][y] = new Tile(x, y, Tiles.DAMIER);
-					System.out.println("___#####DAMIER____ + " + - x + " - " + y);
 				}
-
-				System.out.println("_OTHER_");
 			}
 		}
 		
@@ -181,16 +197,55 @@ public class Level{
 	public void unloadLevel(){
 		loaded = false;
 	}
-	
+
+	public void startLevel(){
+		levelStart = true;
+		player.setAutorizeMovement(true);
+		stopwatch.start();
+		timer.start();
+	}
+
 	/**
 	 * Update du level (Appeler par la fonction update de la classe Game)
 	 */
-	public void update(){		
+	public void update(){
+		if(!levelStart){
+			if(currentTimeStart < timeStart)
+				currentTimeStart++;
+			else
+				startLevel();
+		}
+
+		//Stopwatch
+		stopwatch.update();
+		timer.update();
+
+		//Effet
+		if(stopwatch.getTimeSeconds() == 10)
+			actions.get(Action.ActionType.BLINDNESS).activeAction(Main.getTpsLimit()*8);
+		else if(stopwatch.getTimeSeconds() == 25)
+			actions.get(Action.ActionType.BLINK).activeAction(Main.getTpsLimit()*5);
+
+		//TODO
+		if(timer.getTicksTime() < 0){
+			finalPoint = 0;
+			loose = true;
+			stopwatch.stop();
+			timer.stop();
+		}else{
+			if(player.getX() > 12544 && finalPoint == 0){
+				finalPoint = getPoint();
+				stopwatch.stop();
+				timer.stop();
+				System.out.println("User: " + System.getProperty("user.name") + " Time: " + stopwatch.getTimeFormat());
+			}
+		}
+
 		//Limite droite et bas du level
 		limits[2] = -width * Tile.getSize() + Display.getWidth();
 		limits[3] = -height * Tile.getSize() + Display.getHeight();
 
-		//Render entities
+		//Update entities
 		if(!entities.isEmpty()){
 			ArrayList<Entity> removedEntity = new ArrayList<>();
 			for(Entity entity : entities){
@@ -365,5 +420,20 @@ public class Level{
 
 	public OptionsHud getOptionsHud(){
 		return optionsHud;
+	}
+
+	public String getHudMessage(){
+		if(!levelStart){
+			return "Départ dans: " + (timeStart - currentTimeStart) / Main.getTpsLimit();
+		}else{
+			if(timer.isActive()){
+				return "Temps: " + timer.getTimeFormat();
+			}else{
+				if(!loose)
+					return "User: " + System.getProperty("user.name") + " - Temps: " + stopwatch.getTimeFormat() + " - Points: " + finalPoint;
+				else
+					return "Perdu :(";
+			}
+		}
 	}
 }
